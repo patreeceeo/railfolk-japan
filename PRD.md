@@ -53,18 +53,11 @@ The app must not support:
 
 A user profile is minimal.
 
-It contains:
+The displayed avatar and user name should come from Gravatar using the user’s email address.
 
-* User
-* Short bio
+Fields:
 
-The displayed avatar should come from Gravatar using the user’s email address.
-
-A public user page should show:
-
-* Gravatar
-* Username
-* Short bio
+* Email address
 * List of itineraries created by that user
 
 No followers, no activity feed, no badges.
@@ -73,7 +66,7 @@ No followers, no activity feed, no badges.
 
 An itinerary is created by a user.
 
-It contains:
+Fields:
 
 * Title
 * description
@@ -93,6 +86,8 @@ The itinerary’s total duration should be derived from the earliest start date 
 If an itinerary has no dated items, show duration as empty or “not scheduled.”
 
 ### Transit leg
+
+Only created by admins.
 
 Fields:
 
@@ -114,7 +109,7 @@ No departure time required. No arrival time required. No fare. No schedule looku
 
 A location within Japan.
 
-Normal users do not create these.
+Only created by admins.
 
 Fields:
 
@@ -140,7 +135,7 @@ A visit card is prefabricated curated content managed by admins.
 
 Normal users do not create visits.
 
-Fields should include:
+Fields:
 
 * Location
 * Suggested visit length in hours
@@ -148,7 +143,7 @@ Fields should include:
 
 # Attached visit card
 
-Fields
+Fields:
 
 * Itinerary
 * Visit card
@@ -301,8 +296,6 @@ For non-owner viewers, show only public itineraries. For owner/admin, show all t
 
 ## Admin
 
-Use Django admin heavily.
-
 Admins should be able to manage:
 
 * Visits and attached visits
@@ -313,7 +306,7 @@ Admins should be able to manage:
 * Votes
 * User profiles
 
-Admin-only vote reason aggregates can be implemented as a simple admin page, model admin method, or read-only admin display. Keep it simple.
+Admins can also view vote reason aggregates for itineraries.
 
 ## Seed data
 
