@@ -170,17 +170,9 @@ Fields:
   * language
   * regional context
 * Body
-* Optional region
-* Published/unpublished status
+* Optional Location
 
 Education cards can be attached to an itinerary.
-
-Support attaching an education card either:
-
-* To the itinerary as a whole
-* To a date range
-
-Keep this simple. Do not attach cards to arbitrary internal objects unless that is easier than date-range attachment.
 
 ### Voting
 
@@ -196,26 +188,19 @@ Admins should be able to view aggregate vote counts by reason.
 
 Upvote reasons:
 
-* Clear transit structure
-* Useful cultural context
-* Good regional focus
-* Good pacing
-* Helpful education cards
-* Interesting destination choices
-* Easy to understand
-* Good use of trains/buses
+* Off the beaten path
+* Cost-effective
+* Time-effective
+* Well-paced
+* Informative
 
 Downvote reasons:
 
-* Transit details unclear
-* Too little cultural context
-* Too generic
-* Hard to follow
-* Seems unrealistic
-* Overloaded itinerary
-* Weak education cards
-* Poor regional focus
-* Missing important transit notes
+* Unecessary backtracking
+* Unrealistic visit timing
+* Unrealistic transfer
+* Overloaded
+* Generally low-quality
 
 ## Public pages
 
@@ -249,10 +234,10 @@ Sorting only:
 Each row/card should show:
 
 * Title
-* Creator username
+* Creator username / photo
 * Total duration
 * Last updated
-* Public score
+* Description truncated to 140 chars or "no description"
 
 ### `/itineraries/<id>/`
 
@@ -262,7 +247,6 @@ Respect visibility:
 
 * Public: visible to everyone
 * Unlisted: visible to anyone with the URL
-* Private: visible only to owner and admins
 
 Display:
 
@@ -272,26 +256,14 @@ Display:
 * Visibility if owner/admin
 * Total duration
 * Last updated
-* Public score
 * Vote controls if signed in and not owner
 * Date-grouped itinerary content
+* Education cards
 
 Date-grouped content should show:
 
 * Transit legs for that date
-* Visits active on that date
-* Education cards active on that date or attached to the itinerary as a whole
-
-For each visit, show culturally meaningful information:
-
-* English name
-* Japanese name
-* Reading if present
-* Cultural significance
-* Access note
-* Etiquette note if present
-* Seasonality/timing note if present
-* Timing warning if applicable
+* Visits cards active on that date
 
 ### `/itineraries/new/`
 
@@ -309,8 +281,8 @@ Must support:
 
 * Editing title, description, visibility
 * Adding/editing/deleting transit legs
-* Attaching/removing visits with start/end dates
-* Attaching/removing education cards with optional start/end dates
+* Attaching/removing visits cards with start/end dates
+* Attaching/removing education cards
 
 Use simple forms. Full page reloads are acceptable.
 
@@ -333,12 +305,11 @@ Use Django admin heavily.
 
 Admins should be able to manage:
 
-* Visits
-* Education cards
+* Visits and attached visits
+* Education cards and thier associations
 * Itineraries
 * Transit legs
-* Visit attachments
-* Education card attachments
+* Visits and attached visits
 * Votes
 * User profiles
 
@@ -383,14 +354,6 @@ Sample education cards:
 * Omiyage
 * Kyushu regional context
 
-Include at least one time-sensitive visit, such as:
-
-* Hakata Gion Yamakasa
-
-  * Fixed annual range: July 1–15
-  * Climax: July 15
-  * Timing note: Major Hakata festival; itinerary dates should align with the festival period.
-
 ## Visual/UI direction
 
 Keep the UI plain but readable.
@@ -424,12 +387,11 @@ The prototype is acceptable when:
 * A user can attach dated curated visits
 * A user can attach curated education cards
 * The itinerary page groups content by date without stored day records
-* Time-sensitive visits display timing notes and warnings when appropriate
 * A public itinerary can be browsed from the itinerary index
 * Public itinerary index can sort by name, user, last updated, and total duration
 * A user profile shows Gravatar, short bio, and that user’s itineraries
 * A signed-in user can upvote/downvote a public itinerary with required reasons
 * Normal users do not see aggregate vote reason counts
 * Admins can see aggregate vote reason counts
-* Admins can manage visits and education cards through Django admin
+* Admins can manage visits and education cards
 * The app runs locally with a single documented setup command sequence
