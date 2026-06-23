@@ -38,14 +38,6 @@
         </p>
       </section>
 
-      <section aria-labelledby="current-state">
-        <h2 id="current-state">Current builder state</h2>
-        <p>Starting location: Hakata Station</p>
-        <p>Current location: Kumamoto Station</p>
-        <p>Total duration so far: 3 days</p>
-        <p>Last dated item: <time datetime="2026-10-05">October 5, 2026</time></p>
-      </section>
-
       <section aria-labelledby="built-route">
         <h2 id="built-route">Built route so far</h2>
 
@@ -98,7 +90,7 @@
       </section>
 
       <section aria-labelledby="add-visits">
-        <h2 id="add-visits">Add visits at current location</h2>
+        <h2 id="add-visits">Add visits at Kumamoto Station</h2>
         <p>
           <label for="visit">Visit</label>
           <select id="visit" name="visit">
@@ -115,14 +107,14 @@
           <input id="visit-end" name="visit_end" type="date" value="2026-10-05">
         </p>
         <p>
-          <label for="visit-note">User note</label>
+          <label for="visit-note">Notes</label>
           <textarea id="visit-note" name="visit_note" rows="3"></textarea>
         </p>
         <button type="button">Attach visit</button>
       </section>
 
       <section aria-labelledby="add-transit">
-        <h2 id="add-transit">Add transit leg from current location</h2>
+        <h2 id="add-transit">Add transit leg from Kumamoto</h2>
         <p>
           <label for="leg">Transit leg</label>
           <select id="leg" name="leg">
@@ -135,8 +127,7 @@
           <label for="leg-start">Start date</label>
           <input id="leg-start" name="leg_start" type="date" value="2026-10-06">
         </p>
-        <p>After this leg is added, the current location becomes Beppu Station.</p>
-        <button type="button">Add leg and continue from destination</button>
+        <button type="button">Add leg</button>
       </section>
 
       <section aria-labelledby="manage-education">
@@ -153,7 +144,7 @@
 
       <p>
         <button type="submit">Save itinerary</button>
-        <a href="itinerary-detail.html">Preview public detail page</a>
+        <a href="itinerary-detail.html">Preview</a>
       </p>
     </form>
   </main>
