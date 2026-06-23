@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Create Itinerary - Railfolk Japan</title>
+</head>
+<body>
+  <header>
+    <p><a href="index.html">Railfolk Japan</a></p>
+    <nav aria-label="Main navigation">
+      <a href="itineraries.html">Public itineraries</a>
+      <a href="new-itinerary.html" aria-current="page">Create itinerary</a>
+      <a href="user-profile.html">Profile</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Create itinerary</h1>
+    <p><a href="itinerary-in-progress.html">View an in-progress builder example</a></p>
+
+    <form action="itinerary-detail.html" method="post">
+      <section aria-labelledby="basic-info">
+        <h2 id="basic-info">Basic information</h2>
+        <p>
+          <label for="title">Title</label>
+          <input id="title" name="title" type="text" value="Northern Kyushu Rail Sampler" required>
+        </p>
+        <p>
+          <label for="description">Description</label>
+          <textarea id="description" name="description" rows="5">Fukuoka to Nagasaki, then across to Kumamoto and Beppu with shrine, onsen, and rail context stops.</textarea>
+        </p>
+        <p>
+          <label for="visibility">Visibility</label>
+          <select id="visibility" name="visibility">
+            <option selected>Public</option>
+            <option>Unlisted</option>
+          </select>
+        </p>
+      </section>
+
+      <section aria-labelledby="route-builder">
+        <h2 id="route-builder">Build route</h2>
+        <p>
+          <label for="starting-location">Starting location</label>
+          <select id="starting-location" name="starting_location">
+            <option selected>Hakata Station</option>
+            <option>Nagasaki Station</option>
+            <option>Takeo Onsen</option>
+            <option>Kumamoto Station</option>
+            <option>Beppu Station</option>
+          </select>
+        </p>
+        <p>
+          Current location: Hakata Station
+        </p>
+      </section>
+
+      <section aria-labelledby="visit-card">
+        <h2 id="visit-card">Add visits at current location</h2>
+        <p>
+          <label for="visit">Visit</label>
+          <select id="visit" name="visit">
+            <option>Kushida Shrine</option>
+            <option>Dazaifu Tenmangu</option>
+          </select>
+        </p>
+        <p>
+          <label for="visit-start">Start date</label>
+          <input id="visit-start" name="visit_start" type="date" value="2026-10-03">
+        </p>
+        <p>
+          <label for="visit-end">End date</label>
+          <input id="visit-end" name="visit_end" type="date" value="2026-10-03">
+        </p>
+        <p>
+          <label for="visit-note">User note</label>
+          <textarea id="visit-note" name="visit_note" rows="3"></textarea>
+        </p>
+        <button type="button">Attach visit</button>
+      </section>
+
+      <section aria-labelledby="transit-leg">
+        <h2 id="transit-leg">Add transit leg from current location</h2>
+        <p>
+          <label for="leg">Transit leg</label>
+          <select id="leg" name="leg">
+            <option selected>Hakata Station to Nagasaki Station - shinkansen</option>
+            <option>Hakata Station to Kumamoto Station - shinkansen</option>
+            <option>Hakata Station to Beppu Station - limited express</option>
+          </select>
+        </p>
+        <p>
+          <label for="leg-start">Start date</label>
+          <input id="leg-start" name="leg_start" type="date" value="2026-10-03">
+        </p>
+        <p>
+          After this leg is added, the current location becomes Nagasaki Station.
+        </p>
+        <button type="button">Add leg and continue from destination</button>
+      </section>
+
+      <section aria-labelledby="next-location-preview">
+        <h2 id="next-location-preview">Next step preview</h2>
+        <p>Current location after adding the selected leg: Nagasaki Station</p>
+        <h3>Visits available at Nagasaki Station</h3>
+        <ul>
+          <li>Dejima</li>
+          <li>Sofukuji Temple</li>
+          <li>Nagasaki Peace Park</li>
+        </ul>
+        <h3>Transit legs available from Nagasaki Station</h3>
+        <ul>
+          <li>Nagasaki Station to Takeo Onsen - limited express</li>
+          <li>Nagasaki Station to Kumamoto Station - bus</li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="education-card">
+        <h2 id="education-card">Attach education card</h2>
+        <fieldset>
+          <legend>Education cards</legend>
+          <label><input type="checkbox" name="education" value="shinkansen-vs-limited-express"> Shinkansen vs limited express</label>
+          <label><input type="checkbox" name="education" value="rural-bus-caution"> Rural bus caution</label>
+          <label><input type="checkbox" name="education" value="station-vocabulary"> Station vocabulary</label>
+          <label><input type="checkbox" name="education" value="onsen-basics"> Onsen basics</label>
+          <label><input type="checkbox" name="education" value="kyushu-regional-context"> Kyushu regional context</label>
+        </fieldset>
+      </section>
+
+      <button type="submit">Save itinerary</button>
+    </form>
+  </main>
+</body>
+</html>
