@@ -22,14 +22,15 @@ Avoid React, Next.js, API-first architecture, background jobs, paid APIs, file u
 
 Priority order:
 
-1. Data model
-2. Admin content management
-3. Public itinerary display
-4. Itinerary creation/editing
-5. Visit/card attachment
-6. Date grouping and derived duration
-7. Voting
-8. Seed data
-9. Basic styling
+1. Set up CI/CD using a Nix flake and GitHub action
+2. Data model
+3. Admin content management
+4. Public itinerary display
+5. Itinerary creation/editing
+6. Visit/card attachment
+7. Date grouping and derived duration
+8. Voting
+9. Seed data
+10. Basic styling
 
 Do not spend time on polish until the full core flow works.
