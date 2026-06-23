@@ -4,6 +4,10 @@ The app lets users manually create Japan transit itineraries using trains and bu
 
 This is not a general transit app. It does not calculate routes, validate schedules, book travel, reserve seats, sell passes, optimize fares, or fetch live transit data.
 
+# Goals
+
+The main goal is to be so good at promoting over-land Japan tourism that Japan's rail companies want to sponsor it. In order to do that, the app must be intuitive, useful and fun to use.
+
 ## Core product constraints
 
 The app must support:
@@ -20,7 +24,10 @@ The app must support:
 * Public itinerary browsing with sorting only
 * Voting with required structured reasons
 * Admin-only visibility of aggregate vote reason counts
-* Django admin management for curated visits and education cards
+* Admin management for:
+  - curated visits
+  - education cards
+  - transit legs
 
 The app must not support:
 
