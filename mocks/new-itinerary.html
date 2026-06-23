@@ -42,7 +42,7 @@
       <section aria-labelledby="route-builder">
         <h2 id="route-builder">Build route</h2>
         <p>
-          <label for="starting-location">Starting location</label>
+          <label for="startin-location">Starting location</label>
           <select id="starting-location" name="starting_location">
             <option selected>Hakata Station</option>
             <option>Nagasaki Station</option>
@@ -51,13 +51,10 @@
             <option>Beppu Station</option>
           </select>
         </p>
-        <p>
-          Current location: Hakata Station
-        </p>
       </section>
 
       <section aria-labelledby="visit-card">
-        <h2 id="visit-card">Add visits at current location</h2>
+        <h2 id="visit-card">Add visits at Hakata Station</h2>
         <p>
           <label for="visit">Visit</label>
           <select id="visit" name="visit">
@@ -74,7 +71,7 @@
           <input id="visit-end" name="visit_end" type="date" value="2026-10-03">
         </p>
         <p>
-          <label for="visit-note">User note</label>
+          <label for="visit-note">Notes</label>
           <textarea id="visit-note" name="visit_note" rows="3"></textarea>
         </p>
         <button type="button">Attach visit</button>
@@ -94,26 +91,7 @@
           <label for="leg-start">Start date</label>
           <input id="leg-start" name="leg_start" type="date" value="2026-10-03">
         </p>
-        <p>
-          After this leg is added, the current location becomes Nagasaki Station.
-        </p>
-        <button type="button">Add leg and continue from destination</button>
-      </section>
-
-      <section aria-labelledby="next-location-preview">
-        <h2 id="next-location-preview">Next step preview</h2>
-        <p>Current location after adding the selected leg: Nagasaki Station</p>
-        <h3>Visits available at Nagasaki Station</h3>
-        <ul>
-          <li>Dejima</li>
-          <li>Sofukuji Temple</li>
-          <li>Nagasaki Peace Park</li>
-        </ul>
-        <h3>Transit legs available from Nagasaki Station</h3>
-        <ul>
-          <li>Nagasaki Station to Takeo Onsen - limited express</li>
-          <li>Nagasaki Station to Kumamoto Station - bus</li>
-        </ul>
+        <button type="button">Add leg</button>
       </section>
 
       <section aria-labelledby="education-card">
