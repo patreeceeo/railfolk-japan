@@ -2,11 +2,11 @@
 
 The app lets users manually create Japan transit itineraries using trains and buses. Users can attach prefabricated culturally meaningful visits and prefabricated education cards to their itineraries. Itineraries are public or unlisted. Public itineraries can be browsed and sorted. Other signed-in users can upvote or downvote an itinerary, but they must select one or more predefined reasons. Aggregate vote reason counts are visible only to admins.
 
-This is not a general transit app. It does not calculate routes, validate schedules, book travel, reserve seats, sell passes, optimize fares, or fetch live transit data.
+This is not a general transit app. It does not calculate routes, validate schedules, book travel, reserve seats, sell passes, optimize fares, or fetch live transit data. It is focused on intercity travel within Japan rather than travel within Japan's metro areas.
 
 # Goals
 
-The main goal is to be so good at promoting over-land Japan tourism that Japan's rail companies want to sponsor it. In order to do that, the app must be intuitive, useful and fun to use.
+The main goal is to be so good at promoting over-land Japan tourism that Japan's rail companies want to sponsor it. In order to do that, the app must be focused, intuitive, useful and fun to use.
 
 ## Core product constraints
 
@@ -24,10 +24,7 @@ The app must support:
 * Public itinerary browsing with sorting only
 * Voting with required structured reasons
 * Admin-only visibility of aggregate vote reason counts
-* Admin management for:
-  - curated visits
-  - education cards
-  - transit legs
+* Admin management of all users and content types
 
 The app must not support:
 
@@ -79,10 +76,13 @@ An itinerary is created by a user.
 It contains:
 
 * Title
-* Optional description
-* Visibility: private, unlisted, public
+* description
+* Visibility: private, unlisted
 * Created timestamp
 * Updated timestamp
+* Attached transit legs
+* Attached visit cards
+* Education cards
 
 Do not manually create “days” as stored objects.
 
@@ -94,85 +94,66 @@ If an itinerary has no dated items, show duration as empty or “not scheduled.�
 
 ### Transit leg
 
-A transit leg is manually entered by the user and attached directly to an itinerary.
-
 Fields:
 
-* Itinerary
 * Mode:
-
   * train
   * shinkansen
   * limited express
-  * local train
-  * tram
   * bus
-* Origin name
-* Destination name
+* Origin Location
+* Destination Location
 * Optional operator
 * Optional line name
-* Optional notes
-* Start date
-* End date
+* Estimated fare in yen
+* Duration in days, rounded down, zero or more
 
 No departure time required. No arrival time required. No fare. No schedule lookup.
 
-### Visit
+### Location
 
-A visit is prefabricated curated content managed by admins.
+A location within Japan.
+
+Normal users do not create these.
+
+Fields:
+
+* Name
+* Description
+* Latitude
+* Longitude
+* Optional address
+
+### Attached transit leg
+
+An attached transit leg is manually created by the user from a transit leg and attached directly to an itinerary.
+
+Fields:
+
+* Transit leg
+* Itenerary
+* Start date
+
+### Visit card
+
+A visit card is prefabricated curated content managed by admins.
 
 Normal users do not create visits.
 
 Fields should include:
 
-* English name
-* Japanese name
-* Optional reading
-* Region
-* Type
-* Nearest station or stop
-* Access note
-* Suggested visit length
-* Cultural significance
-* Etiquette note
-* Seasonality note
-* Published/unpublished status
+* Location
+* Suggested visit length in hours
+* Estimated cost of admission in yen
 
-Visits can be attached to an itinerary with:
+# Attached visit card
+
+Fields
 
 * Itinerary
-* Visit
+* Visit card
 * Start date
-* End date
 * Optional user note
-
-### Time-sensitive visits
-
-Some visits are time-sensitive, such as festivals or seasonal events.
-
-Support simple editorial timing metadata on visits.
-
-Timing categories:
-
-* Always available
-* Fixed annual date range
-* Seasonal window
-* Variable annual dates
-* Irregular or limited
-
-For fixed annual date ranges, store enough information to represent recurring month/day ranges, for example August 2 through August 7.
-
-For seasonal windows, store an editorial note and approximate timing information if useful.
-
-When a time-sensitive visit is attached to an itinerary, display timing guidance on the itinerary page.
-
-If the attached date range appears outside a fixed annual date range, show a clear warning:
-
-“This visit is usually available August 2–7. The attached dates may not match the event period.”
-
-Do not block the user from attaching or publishing the visit.
-
-Do not fetch official event calendars. Do not guarantee availability.
 
 ### Education card
 
@@ -184,7 +165,6 @@ Fields:
 
 * Title
 * Category:
-
   * rail
   * culture
   * language
