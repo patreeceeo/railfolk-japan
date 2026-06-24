@@ -37,58 +37,52 @@
           </select>
         </p>
       </section>
+      <button type="button">save</button>
+    </form>
 
-      <section aria-labelledby="built-route">
-        <h2 id="built-route">Built route so far</h2>
+    <section aria-labelledby="built-route">
+      <h2 id="built-route">Built route so far</h2>
 
-        <section aria-labelledby="oct-3">
-          <h3 id="oct-3"><time datetime="2026-10-03">October 3, 2026</time></h3>
-          <h4>Visits at Hakata Station</h4>
-          <ul>
-            <li>Kushida Shrine, 1 hour, 0 yen.</li>
-            <li>Dazaifu Tenmangu, 2 hours, 0 yen.</li>
-          </ul>
-          <h4>Transit leg</h4>
-          <ul>
-            <li>Shinkansen: Hakata Station to Nagasaki Station, estimated fare 6,050 yen.</li>
-          </ul>
-        </section>
-
-        <section aria-labelledby="oct-4">
-          <h3 id="oct-4"><time datetime="2026-10-04">October 4, 2026</time></h3>
-          <h4>Visits at Nagasaki Station</h4>
-          <ul>
-            <li>Dejima, 2 hours, 520 yen.</li>
-            <li>Nagasaki Peace Park, 2 hours, 0 yen.</li>
-          </ul>
-          <h4>Transit leg</h4>
-          <ul>
-            <li>Limited express: Nagasaki Station to Takeo Onsen, estimated fare 3,000 yen.</li>
-          </ul>
-        </section>
-
-        <section aria-labelledby="oct-5">
-          <h3 id="oct-5"><time datetime="2026-10-05">October 5, 2026</time></h3>
-          <h4>Visits at Takeo Onsen</h4>
-          <ul>
-            <li>Takeo Onsen, 3 hours, 500 yen.</li>
-          </ul>
-          <h4>Transit leg</h4>
-          <ul>
-            <li>Bus: Takeo Onsen to Kumamoto Station, estimated fare 3,600 yen.</li>
-          </ul>
-        </section>
-      </section>
-
-      <section aria-labelledby="education-cards">
-        <h2 id="education-cards">Attached education cards</h2>
+      <section aria-labelledby="oct-3">
+        <h3 id="oct-3"><time datetime="2026-10-03">October 3, 2026</time></h3>
+        <h4>Visits at Hakata Station</h4>
         <ul>
-          <li>Shinkansen vs limited express, rail.</li>
-          <li>Rural bus caution, regional context.</li>
-          <li>Station vocabulary, language.</li>
+          <li>Kushida Shrine, 1 hour, 0 yen.</li>
+          <li>Dazaifu Tenmangu, 2 hours, 0 yen.</li>
+        </ul>
+        <h4>Transit leg</h4>
+        <ul>
+          <li>Shinkansen: Hakata Station to Nagasaki Station, estimated fare 6,050 yen.</li>
         </ul>
       </section>
 
+      <section aria-labelledby="oct-4">
+        <h3 id="oct-4"><time datetime="2026-10-04">October 4, 2026</time></h3>
+        <h4>Visits at Nagasaki Station</h4>
+        <ul>
+          <li>Dejima, 2 hours, 520 yen.</li>
+          <li>Nagasaki Peace Park, 2 hours, 0 yen.</li>
+        </ul>
+        <h4>Transit leg</h4>
+        <ul>
+          <li>Limited express: Nagasaki Station to Takeo Onsen, estimated fare 3,000 yen.</li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="oct-5">
+        <h3 id="oct-5"><time datetime="2026-10-05">October 5, 2026</time></h3>
+        <h4>Visits at Takeo Onsen</h4>
+        <ul>
+          <li>Takeo Onsen, 3 hours, 500 yen.</li>
+        </ul>
+        <h4>Transit leg</h4>
+        <ul>
+          <li>Bus: Takeo Onsen to Kumamoto Station, estimated fare 3,600 yen.</li>
+        </ul>
+      </section>
+    </section>
+
+    <form action="itinerary-detail.html" method="post">
       <section aria-labelledby="add-visits">
         <h2 id="add-visits">Add visits at Kumamoto Station</h2>
         <p>
@@ -110,9 +104,11 @@
           <label for="visit-note">Notes</label>
           <textarea id="visit-note" name="visit_note" rows="3"></textarea>
         </p>
-        <button type="button">Attach visit</button>
+        <button type="submit">Attach visit</button>
       </section>
+    </form>
 
+    <form action="itinerary-detail.html" method="post">
       <section aria-labelledby="add-transit">
         <h2 id="add-transit">Add transit leg from Kumamoto</h2>
         <p>
@@ -127,9 +123,20 @@
           <label for="leg-start">Start date</label>
           <input id="leg-start" name="leg_start" type="date" value="2026-10-06">
         </p>
-        <button type="button">Add leg</button>
+        <button type="submit">Add leg</button>
       </section>
+    </form>
+      
+    <section aria-labelledby="education-cards">
+      <h2 id="education-cards">Attached education cards</h2>
+      <ul>
+        <li>Shinkansen vs limited express, rail.</li>
+        <li>Rural bus caution, regional context.</li>
+        <li>Station vocabulary, language.</li>
+      </ul>
+    </section>
 
+    <form action="itinerary-detail.html" method="post">
       <section aria-labelledby="manage-education">
         <h2 id="manage-education">Attach more education cards</h2>
         <fieldset>
@@ -141,11 +148,7 @@
           <label><input type="checkbox" name="education" value="kyushu-regional-context"> Kyushu regional context</label>
         </fieldset>
       </section>
-
-      <p>
-        <button type="submit">Save itinerary</button>
-        <a href="itinerary-detail.html">Preview</a>
-      </p>
+      <button type="submit">Add card</button>
     </form>
   </main>
 </body>
