@@ -1,6 +1,6 @@
 ## Overview
 
-See [./PRD.md](./PDR.md) for information about the product requirements.
+See [./PRD.md](./PRD.md) for information about the product requirements.
 
 ## Recommended stack
 
