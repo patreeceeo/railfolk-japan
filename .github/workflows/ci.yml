@@ -50,6 +50,7 @@ jobs:
           app_dir="$HOME/railfolk-japan"
           repo_url="https://github.com/patreeceeo/railfolk-japan.git"
           env_file="$app_dir/.env"
+          nix_profile="$app_dir/.nix-profile"
           service_dir="$HOME/.config/systemd/user"
           service_file="$service_dir/railfolk-japan.service"
 
@@ -74,8 +75,10 @@ jobs:
           . "$env_file"
           set +a
 
-          nix develop --command python manage.py migrate --noinput
-          nix develop --command python manage.py collectstatic --noinput
+          nix develop --profile "$nix_profile" --command true
+
+          "$nix_profile/bin/python" manage.py migrate --noinput
+          "$nix_profile/bin/python" manage.py collectstatic --noinput
 
           mkdir -p "$service_dir"
           cat > "$service_file" <<SERVICE
@@ -86,7 +89,9 @@ jobs:
           [Service]
           WorkingDirectory=$app_dir
           EnvironmentFile=$env_file
-          ExecStart=$(command -v nix) develop --command gunicorn railfolk_japan.wsgi:application --bind 127.0.0.1:8000
+          ExecStart=$nix_profile/bin/gunicorn railfolk_japan.wsgi:application --bind 127.0.0.1:8000
+          KillSignal=SIGQUIT
+          TimeoutStopSec=30
           Restart=always
           RestartSec=5
 
@@ -95,6 +100,9 @@ jobs:
           SERVICE
 
           systemctl --user daemon-reload
-          systemctl --user enable --now railfolk-japan.service
-          systemctl --user restart railfolk-japan.service
+          if systemctl --user is-active --quiet railfolk-japan.service; then
+            systemctl --user restart railfolk-japan.service
+          else
+            systemctl --user enable --now railfolk-japan.service
+          fi
           REMOTE_SCRIPT
