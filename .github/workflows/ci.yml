@@ -1,0 +1,100 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      DJANGO_DEBUG: "true"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v31
+      - name: Check Django project
+        run: nix develop --command python manage.py check
+      - name: Run tests
+        run: nix develop --command python manage.py test
+
+  deploy:
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure SSH
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST || vars.DEPLOY_HOST }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER || vars.DEPLOY_USER }}
+        run: |
+          test -n "$DEPLOY_HOST"
+          test -n "$DEPLOY_SSH_KEY"
+          test -n "$DEPLOY_USER"
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts
+      - name: Deploy
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST || vars.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER || vars.DEPLOY_USER }}
+        run: |
+          ssh -i ~/.ssh/deploy_key "$DEPLOY_USER@$DEPLOY_HOST" 'bash -s' <<'REMOTE_SCRIPT'
+          set -euo pipefail
+
+          app_dir="$HOME/railfolk-japan"
+          repo_url="https://github.com/patreeceeo/railfolk-japan.git"
+          env_file="$app_dir/.env"
+          service_dir="$HOME/.config/systemd/user"
+          service_file="$service_dir/railfolk-japan.service"
+
+          if [ ! -d "$app_dir/.git" ]; then
+            git clone "$repo_url" "$app_dir"
+          fi
+
+          cd "$app_dir"
+          git fetch origin main
+          git reset --hard origin/main
+
+          if [ ! -f "$env_file" ]; then
+            umask 077
+            secret_key="$(nix develop --command python -c 'import secrets; print(secrets.token_urlsafe(50))')"
+            {
+              printf 'DJANGO_SECRET_KEY=%s\n' "$secret_key"
+              printf 'DJANGO_ALLOWED_HOSTS=railfolk.zzt64.com,localhost,127.0.0.1\n'
+            } > "$env_file"
+          fi
+
+          set -a
+          . "$env_file"
+          set +a
+
+          nix develop --command python manage.py migrate --noinput
+          nix develop --command python manage.py collectstatic --noinput
+
+          mkdir -p "$service_dir"
+          cat > "$service_file" <<SERVICE
+          [Unit]
+          Description=Railfolk Japan
+          After=network.target
+
+          [Service]
+          WorkingDirectory=$app_dir
+          EnvironmentFile=$env_file
+          ExecStart=$(command -v nix) develop --command gunicorn railfolk_japan.wsgi:application --bind 127.0.0.1:8000
+          Restart=always
+          RestartSec=5
+
+          [Install]
+          WantedBy=default.target
+          SERVICE
+
+          systemctl --user daemon-reload
+          systemctl --user enable --now railfolk-japan.service
+          systemctl --user restart railfolk-japan.service
+          REMOTE_SCRIPT
