@@ -12,7 +12,7 @@ jobs:
     env:
       DJANGO_DEBUG: "true"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: cachix/install-nix-action@v31
       - name: Check Django project
         run: nix develop --command python manage.py check
