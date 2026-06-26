@@ -34,11 +34,14 @@
           railfolkJapanService = pkgs.writeText "railfolk-japan.service" ''
             [Unit]
             Description=Railfolk Japan
-            After=network.target
+            After=network-online.target
+            Wants=network-online.target
 
             [Service]
-            WorkingDirectory=%h/railfolk-japan
-            EnvironmentFile=%h/railfolk-japan/.env
+            User=railfolk-japan
+            Group=railfolk-japan
+            WorkingDirectory=/var/lib/railfolk-japan/app
+            EnvironmentFile=/etc/railfolk-japan/env
             ExecStart=${railfolkJapanServer}/bin/railfolk-japan-server
             KillSignal=SIGQUIT
             TimeoutStopSec=30
@@ -46,7 +49,7 @@
             RestartSec=5
 
             [Install]
-            WantedBy=default.target
+            WantedBy=multi-user.target
           '';
         });
 
