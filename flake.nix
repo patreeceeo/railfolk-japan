@@ -51,6 +51,52 @@
             [Install]
             WantedBy=multi-user.target
           '';
+
+          railfolkJapanInstallService = pkgs.writeShellApplication {
+            name = "railfolk-japan-install-service";
+            runtimeInputs = [
+              pkgs.coreutils
+              pkgs.glibc.bin
+              pkgs.shadow
+              pkgs.systemd
+            ];
+            text = ''
+              if [ "$(id -u)" -ne 0 ]; then
+                echo "railfolk-japan-install-service must run as root" >&2
+                exit 1
+              fi
+
+              if ! groupadd --system railfolk-japan 2>/dev/null; then
+                if ! getent group railfolk-japan >/dev/null 2>&1; then
+                  echo "Failed to create railfolk-japan group" >&2
+                  exit 1
+                fi
+              fi
+
+              if ! id -u railfolk-japan >/dev/null 2>&1; then
+                useradd \
+                  --system \
+                  --gid railfolk-japan \
+                  --home-dir /var/lib/railfolk-japan \
+                  --shell /usr/sbin/nologin \
+                  railfolk-japan
+              fi
+
+              install -d -m 0755 -o railfolk-japan -g railfolk-japan /var/lib/railfolk-japan
+              install -d -m 0755 -o railfolk-japan -g railfolk-japan /var/lib/railfolk-japan/app
+              install -d -m 0755 -o root -g root /etc/railfolk-japan
+
+              if [ ! -f /etc/railfolk-japan/env ]; then
+                echo "Missing /etc/railfolk-japan/env; install the production environment file before starting the service" >&2
+                exit 1
+              fi
+
+              install -m 0644 ${railfolkJapanService} /etc/systemd/system/railfolk-japan.service
+              systemctl daemon-reload
+              systemctl enable railfolk-japan.service
+              systemctl restart railfolk-japan.service
+            '';
+          };
         });
 
       devShells = forAllSystems (system:
