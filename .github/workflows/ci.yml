@@ -77,8 +77,8 @@ jobs:
 
           nix develop --profile "$nix_profile" --command true
 
-          "$nix_profile/bin/python" manage.py migrate --noinput
-          "$nix_profile/bin/python" manage.py collectstatic --noinput
+          nix develop --profile "$nix_profile" --command python manage.py migrate --noinput
+          nix develop --profile "$nix_profile" --command python manage.py collectstatic --noinput
 
           mkdir -p "$service_dir"
           cat > "$service_file" <<SERVICE
@@ -89,7 +89,7 @@ jobs:
           [Service]
           WorkingDirectory=$app_dir
           EnvironmentFile=$env_file
-          ExecStart=$nix_profile/bin/gunicorn railfolk_japan.wsgi:application --bind 127.0.0.1:8000
+          ExecStart=$(command -v nix) develop --profile $nix_profile --command gunicorn railfolk_japan.wsgi:application --bind 127.0.0.1:8000
           KillSignal=SIGQUIT
           TimeoutStopSec=30
           Restart=always
