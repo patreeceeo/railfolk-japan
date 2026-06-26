@@ -47,45 +47,62 @@ jobs:
           ssh -i ~/.ssh/deploy_key "$DEPLOY_USER@$DEPLOY_HOST" 'bash -s' <<'REMOTE_SCRIPT'
           set -euo pipefail
 
-          app_dir="$HOME/railfolk-japan"
+          app_dir="/var/lib/railfolk-japan/app"
           repo_url="https://github.com/patreeceeo/railfolk-japan.git"
-          env_file="$app_dir/.env"
-          service_out_link="$HOME/.local/state/railfolk-japan/service"
-          service_dir="$HOME/.config/systemd/user"
-          service_file="$service_dir/railfolk-japan.service"
+          env_file="/etc/railfolk-japan/env"
+          service_user="railfolk-japan"
+          service_group="railfolk-japan"
 
-          if [ ! -d "$app_dir/.git" ]; then
-            git clone "$repo_url" "$app_dir"
+          if ! getent group "$service_group" >/dev/null 2>&1; then
+            sudo groupadd --system "$service_group"
           fi
 
-          cd "$app_dir"
-          git fetch origin main
-          git reset --hard origin/main
+          if ! id -u "$service_user" >/dev/null 2>&1; then
+            sudo useradd \
+              --system \
+              --gid "$service_group" \
+              --home-dir /var/lib/railfolk-japan \
+              "$service_user"
+          fi
+
+          sudo install -d -m 0755 -o "$service_user" -g "$service_group" /var/lib/railfolk-japan
+          sudo install -d -m 0755 -o "$service_user" -g "$service_group" "$app_dir"
+          sudo install -d -m 0755 -o root -g root /etc/railfolk-japan
+
+          old_user_service="$HOME/.config/systemd/user/railfolk-japan.service"
+          if [ -f "$old_user_service" ]; then
+            systemctl --user disable --now railfolk-japan.service >/dev/null 2>&1 || true
+            rm -f "$old_user_service"
+            systemctl --user daemon-reload >/dev/null 2>&1 || true
+          fi
+
+          if [ ! -d "$app_dir/.git" ]; then
+            sudo -u "$service_user" git clone "$repo_url" "$app_dir"
+          fi
+
+          sudo -u "$service_user" git -C "$app_dir" fetch origin main
+          sudo -u "$service_user" git -C "$app_dir" reset --hard origin/main
 
           if [ ! -f "$env_file" ]; then
             umask 077
-            secret_key="$(nix develop --command python -c 'import secrets; print(secrets.token_urlsafe(50))')"
+            secret_key="$(sudo -u "$service_user" bash -lc "cd '$app_dir' && nix develop --command python -c 'import secrets; print(secrets.token_urlsafe(50))'")"
+            env_tmp="$(mktemp)"
             {
               printf 'DJANGO_SECRET_KEY=%s\n' "$secret_key"
               printf 'DJANGO_ALLOWED_HOSTS=railfolk.zzt64.com,localhost,127.0.0.1\n'
-            } > "$env_file"
+              printf 'DJANGO_DATABASE_PATH=/var/lib/railfolk-japan/db.sqlite3\n'
+            } > "$env_tmp"
+            sudo install -m 0640 -o root -g "$service_group" "$env_tmp" "$env_file"
+            rm -f "$env_tmp"
           fi
+          sudo chown root:"$service_group" "$env_file"
+          sudo chmod 0640 "$env_file"
 
-          set -a
-          . "$env_file"
-          set +a
+          sudo -u "$service_user" bash -lc "cd '$app_dir' && set -a && . '$env_file' && set +a && nix develop --command python manage.py migrate --noinput"
+          sudo -u "$service_user" bash -lc "cd '$app_dir' && set -a && . '$env_file' && set +a && nix develop --command python manage.py collectstatic --noinput"
 
-          nix develop --command python manage.py migrate --noinput
-          nix develop --command python manage.py collectstatic --noinput
+          installer="$(sudo -u "$service_user" bash -lc "cd '$app_dir' && nix build .#railfolkJapanInstallService --print-out-paths")"
+          sudo "$installer/bin/railfolk-japan-install-service"
 
-          mkdir -p "$service_dir" "$(dirname "$service_out_link")"
-          service_source="$(nix build .#railfolkJapanService --print-out-paths --out-link "$service_out_link")"
-          install -m 644 "$service_source" "$service_file"
-
-          systemctl --user daemon-reload
-          if systemctl --user is-active --quiet railfolk-japan.service; then
-            systemctl --user restart railfolk-japan.service
-          else
-            systemctl --user enable --now railfolk-japan.service
-          fi
+          sudo systemctl status railfolk-japan.service --no-pager
           REMOTE_SCRIPT

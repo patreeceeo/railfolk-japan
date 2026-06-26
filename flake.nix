@@ -57,6 +57,7 @@
             runtimeInputs = [
               pkgs.coreutils
               pkgs.glibc.bin
+              python
               pkgs.shadow
               pkgs.systemd
             ];
@@ -78,7 +79,6 @@
                   --system \
                   --gid railfolk-japan \
                   --home-dir /var/lib/railfolk-japan \
-                  --shell /usr/sbin/nologin \
                   railfolk-japan
               fi
 
@@ -87,9 +87,20 @@
               install -d -m 0755 -o root -g root /etc/railfolk-japan
 
               if [ ! -f /etc/railfolk-japan/env ]; then
-                echo "Missing /etc/railfolk-japan/env; install the production environment file before starting the service" >&2
-                exit 1
+                umask 077
+                secret_key="$(python -c 'import secrets; print(secrets.token_urlsafe(50))')"
+                env_tmp="$(mktemp)"
+                {
+                  printf 'DJANGO_SECRET_KEY=%s\n' "$secret_key"
+                  printf 'DJANGO_ALLOWED_HOSTS=railfolk.zzt64.com,localhost,127.0.0.1\n'
+                  printf 'DJANGO_DATABASE_PATH=/var/lib/railfolk-japan/db.sqlite3\n'
+                } > "$env_tmp"
+                install -m 0640 -o root -g railfolk-japan "$env_tmp" /etc/railfolk-japan/env
+                rm -f "$env_tmp"
               fi
+
+              chown root:railfolk-japan /etc/railfolk-japan/env
+              chmod 0640 /etc/railfolk-japan/env
 
               install -m 0644 ${railfolkJapanService} /etc/systemd/system/railfolk-japan.service
               systemctl daemon-reload
