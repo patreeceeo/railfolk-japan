@@ -50,7 +50,7 @@ jobs:
           app_dir="$HOME/railfolk-japan"
           repo_url="https://github.com/patreeceeo/railfolk-japan.git"
           env_file="$app_dir/.env"
-          nix_profile="$app_dir/.nix-profile"
+          service_out_link="$HOME/.local/state/railfolk-japan/service"
           service_dir="$HOME/.config/systemd/user"
           service_file="$service_dir/railfolk-japan.service"
 
@@ -75,13 +75,11 @@ jobs:
           . "$env_file"
           set +a
 
-          nix develop --profile "$nix_profile" --command true
+          nix develop --command python manage.py migrate --noinput
+          nix develop --command python manage.py collectstatic --noinput
 
-          nix develop --profile "$nix_profile" --command python manage.py migrate --noinput
-          nix develop --profile "$nix_profile" --command python manage.py collectstatic --noinput
-
-          mkdir -p "$service_dir"
-          service_source="$(nix build .#railfolkJapanService --print-out-paths --no-link)"
+          mkdir -p "$service_dir" "$(dirname "$service_out_link")"
+          service_source="$(nix build .#railfolkJapanService --print-out-paths --out-link "$service_out_link")"
           install -m 644 "$service_source" "$service_file"
 
           systemctl --user daemon-reload

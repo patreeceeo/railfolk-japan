@@ -15,8 +15,22 @@
       packages = forAllSystems (system:
         let
           pkgs = pkgsFor system;
+          python = pkgs.python313.withPackages (pythonPackages: [
+            pythonPackages.django
+            pythonPackages.gunicorn
+          ]);
         in
-        {
+        rec {
+          railfolkJapanServer = pkgs.writeShellApplication {
+            name = "railfolk-japan-server";
+            runtimeInputs = [
+              python
+            ];
+            text = ''
+              exec gunicorn railfolk_japan.wsgi:application --bind 127.0.0.1:8000
+            '';
+          };
+
           railfolkJapanService = pkgs.writeText "railfolk-japan.service" ''
             [Unit]
             Description=Railfolk Japan
@@ -25,7 +39,7 @@
             [Service]
             WorkingDirectory=%h/railfolk-japan
             EnvironmentFile=%h/railfolk-japan/.env
-            ExecStart=${pkgs.nix}/bin/nix develop --profile %h/railfolk-japan/.nix-profile --command gunicorn railfolk_japan.wsgi:application --bind 127.0.0.1:8000
+            ExecStart=${railfolkJapanServer}/bin/railfolk-japan-server
             KillSignal=SIGQUIT
             TimeoutStopSec=30
             Restart=always
