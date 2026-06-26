@@ -81,23 +81,8 @@ jobs:
           nix develop --profile "$nix_profile" --command python manage.py collectstatic --noinput
 
           mkdir -p "$service_dir"
-          cat > "$service_file" <<SERVICE
-          [Unit]
-          Description=Railfolk Japan
-          After=network.target
-
-          [Service]
-          WorkingDirectory=$app_dir
-          EnvironmentFile=$env_file
-          ExecStart=$(command -v nix) develop --profile $nix_profile --command gunicorn railfolk_japan.wsgi:application --bind 127.0.0.1:8000
-          KillSignal=SIGQUIT
-          TimeoutStopSec=30
-          Restart=always
-          RestartSec=5
-
-          [Install]
-          WantedBy=default.target
-          SERVICE
+          service_source="$(nix build .#railfolkJapanService --print-out-paths --no-link)"
+          install -m 644 "$service_source" "$service_file"
 
           systemctl --user daemon-reload
           if systemctl --user is-active --quiet railfolk-japan.service; then
