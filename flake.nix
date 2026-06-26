@@ -102,10 +102,26 @@
               chown root:railfolk-japan /etc/railfolk-japan/env
               chmod 0640 /etc/railfolk-japan/env
 
-              install -m 0644 ${railfolkJapanService} /etc/systemd/system/railfolk-japan.service
+              unit_name=railfolk-japan.service
+              persistent_unit=/etc/systemd/system/$unit_name
+              runtime_unit=/run/systemd/system/$unit_name
+
+              if install -d -m 0755 -o root -g root /etc/systemd/system \
+                && install -m 0644 ${railfolkJapanService} "$persistent_unit"; then
+                installed_persistently=1
+              else
+                install -d -m 0755 -o root -g root /run/systemd/system
+                install -m 0644 ${railfolkJapanService} "$runtime_unit"
+                installed_persistently=0
+              fi
+
               systemctl daemon-reload
-              systemctl enable railfolk-japan.service
-              systemctl restart railfolk-japan.service
+              if [ "$installed_persistently" -eq 1 ]; then
+                systemctl enable "$unit_name"
+              else
+                echo "Installed $unit_name as a runtime unit because /etc/systemd/system is not writable; add it to host configuration for boot persistence" >&2
+              fi
+              systemctl restart "$unit_name"
             '';
           };
         });
