@@ -66,13 +66,6 @@ jobs:
           sudo install -d -m 0755 -o "$service_user" -g "$service_group" "$app_dir"
           sudo install -d -m 0755 -o root -g root /etc/railfolk-japan
 
-          old_user_service="$HOME/.config/systemd/user/railfolk-japan.service"
-          if [ -f "$old_user_service" ]; then
-            systemctl --user disable --now railfolk-japan.service >/dev/null 2>&1 || true
-            rm -f "$old_user_service"
-            systemctl --user daemon-reload >/dev/null 2>&1 || true
-          fi
-
           if [ ! -d "$app_dir/.git" ]; then
             sudo -u "$service_user" git clone "$repo_url" "$app_dir"
           fi
@@ -99,6 +92,14 @@ jobs:
           sudo -u "$service_user" bash -lc "cd '$app_dir' && set -a && . '$env_file' && set +a && nix develop --command python manage.py collectstatic --noinput"
 
           installer="$(sudo -u "$service_user" bash -lc "cd '$app_dir' && nix build .#railfolkJapanInstallService --print-out-paths")"
+
+          old_user_service="$HOME/.config/systemd/user/railfolk-japan.service"
+          if [ -f "$old_user_service" ]; then
+            systemctl --user disable --now railfolk-japan.service >/dev/null 2>&1 || true
+            rm -f "$old_user_service"
+            systemctl --user daemon-reload >/dev/null 2>&1 || true
+          fi
+
           sudo "$installer/bin/railfolk-japan-install-service"
 
           sudo systemctl status railfolk-japan.service --no-pager
