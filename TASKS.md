@@ -10,6 +10,7 @@
 ## T1 · Project Foundation
 
 ### T1-A · Django project scaffold
+- [ ] complete?
 - **Depends on:** nothing
 - Create the `railfolk_japan` Django project and a single app (`core`).
 - Add `manage.py`, `settings.py` (SQLite, `DEBUG=True` locally), `urls.py`.
@@ -17,6 +18,7 @@
 - Verify: `python manage.py check` passes with no errors.
 
 ### T1-B · CI/CD pipeline
+- [ ] complete?
 - **Depends on:** T1-A
 - Add `.github/workflows/ci.yml`:
   - Triggered on every push to `main`.
@@ -30,12 +32,14 @@
 ## T2 · Data Models
 
 ### T2-A · User profile
+- [ ] complete?
 - **Depends on:** T1-A
 - Add a `get_gravatar_url(size)` helper on the model using the user's email MD5.
 - No avatar upload field — Gravatar only.
 - Include unit tests for `get_gravatar_url`.
 
 ### T2-B · Admin-managed content models
+- [ ] complete?
 - **Depends on:** T1-A
 - Add models (admin-only creation):
   - `Location`: `name`, `description`, `latitude`, `longitude`, `address (optional)`
@@ -45,6 +49,7 @@
 - Include migrations.
 
 ### T2-C · Itinerary models
+- [ ] complete?
 - **Depends on:** T2-A, T2-B
 - Add models:
   - `Itinerary`: `title`, `description`, `visibility` (choices: public/unlisted), `owner` → `User`, `created_at`, `updated_at`, `education_cards` M2M → `EducationCard`
@@ -54,6 +59,7 @@
 - Include migrations.
 
 ### T2-D · Derived date helpers
+- [ ] complete?
 - **Depends on:** T2-C
 - On `Itinerary`, add:
   - `total_duration()` → returns `(earliest_start, latest_end)` tuple across `AttachedTransitLeg` and `AttachedVisitCard`; returns `None` if no dated items.
@@ -65,6 +71,7 @@
 ## T3 · Admin & Seed Data
 
 ### T3-A · Django admin registration
+- [ ] complete?
 - **Depends on:** T2-C
 - Register in `admin.py`:
   - `User` (with profile fields)
@@ -74,6 +81,7 @@
 - Add a custom `Itinerary` admin change view that shows aggregate vote-reason counts.
 
 ### T3-B · Northern Kyushu seed data
+- [ ] complete?
 - **Depends on:** T2-C
 - Add a management command `python manage.py seed`.
 - Must create:
@@ -89,6 +97,7 @@
 ## T4 · Auth Pages
 
 ### T4-A · Sign-up and sign-in
+- [ ] complete?
 - **Depends on:** T2-A
 - Use Django's built-in auth views for login/logout.
 - Add a minimal sign-up form (username, email, password).
@@ -100,12 +109,14 @@
 ## T5 · Public Pages
 
 ### T5-A · Landing page `/`
+- [ ] complete?
 - **Depends on:** T1-A
 - Render `mocks/index.html` as a reference.
 - One-paragraph product description + link to `/itineraries/`.
 - No unit tests required.
 
 ### T5-B · Itinerary index `/itineraries/`
+- [ ] complete?
 - **Depends on:** T2-D
 - Show only public itineraries.
 - Columns: title, creator (username + Gravatar), total duration, last updated, description (truncated to 140 chars).
@@ -113,6 +124,7 @@
 - Reference: `mocks/itineraries.html`.
 
 ### T5-C · Itinerary detail `/itineraries/<id>/`
+- [ ] complete?
 - **Depends on:** T2-D
 - Respect visibility: public = everyone; unlisted = anyone with the URL; private = owner/admin only (404 for others).
 - Display: title, author (Gravatar + username), description, total duration, last updated.
@@ -123,6 +135,7 @@
 - Reference: `mocks/itinerary-detail.html` and `mocks/itinerary-in-progress.html`.
 
 ### T5-D · User profile `/users/<username>/`
+- [ ] complete?
 - **Depends on:** T2-A, T2-C
 - Show: Gravatar, username, short bio, list of itineraries.
 - Non-owner/non-admin: show only public itineraries. Owner/admin: show all.
@@ -133,6 +146,7 @@
 ## T6 · Itinerary Editing
 
 ### T6-A · Create and edit forms
+- [ ] complete?
 - **Depends on:** T4-A, T2-C
 - `/itineraries/new/` — signed-in users only; creates `Itinerary`.
 - `/itineraries/<id>/edit/` — owner/admin only; edits title, description, visibility.
@@ -140,18 +154,21 @@
 - Reference: `mocks/new-itinerary.html`, `mocks/itinerary-in-progress.html`.
 
 ### T6-B · Transit-leg attachment editing
+- [ ] complete?
 - **Depends on:** T6-A, T2-B
 - On the edit page, allow adding/editing/removing `AttachedTransitLeg` records.
 - User picks from the curated `TransitLeg` library (dropdown or search); sets `start_date`.
 - Inline formset is acceptable.
 
 ### T6-C · Visit-card attachment editing
+- [ ] complete?
 - **Depends on:** T6-A, T2-B
 - On the edit page, allow adding/editing/removing `AttachedVisitCard` records.
 - User picks from `VisitCard` library; sets `start_date` and optional note.
 - Inline formset is acceptable.
 
 ### T6-D · Education-card attachment editing
+- [ ] complete?
 - **Depends on:** T6-A, T2-B
 - On the edit page, allow attaching/detaching `EducationCard` records to the itinerary M2M.
 - Checkbox list or multi-select is fine.
@@ -161,6 +178,7 @@
 ## T7 · Voting
 
 ### T7-A · Vote model and submit
+- [ ] complete?
 - **Depends on:** T5-C, T4-A
 - Add `Vote` model: `itinerary`, `user`, `direction` (up/down), `reasons` (M2M or JSON to a predefined list).
 - Predefined upvote reasons: Off the beaten path, Cost-effective, Time-effective, Well-paced, Informative.
@@ -171,6 +189,7 @@
 - Display vote score (upvotes − downvotes) publicly on the detail page.
 
 ### T7-B · Admin vote reason aggregates
+- [ ] complete?
 - **Depends on:** T7-A, T3-A
 - In the `Itinerary` admin detail view, show counts per reason for up and down votes.
 - Normal users never see reason breakdowns.
