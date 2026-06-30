@@ -49,7 +49,7 @@
 - Include migrations.
 
 ### T2-C · Itinerary models
-- [ ] complete?
+- [x] complete?
 - **Depends on:** T2-A, T2-B
 - Add models:
   - `Itinerary`: `title`, `description`, `visibility` (choices: public/unlisted), `owner` → `User`, `created_at`, `updated_at`, `education_cards` M2M → `EducationCard`
