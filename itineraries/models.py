@@ -95,3 +95,63 @@ class EducationCard(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Itinerary(models.Model):
+    class Visibility(models.TextChoices):
+        PUBLIC = "public", "Public"
+        UNLISTED = "unlisted", "Unlisted"
+
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    visibility = models.CharField(max_length=20, choices=Visibility.choices)
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="itineraries",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    education_cards = models.ManyToManyField(
+        EducationCard,
+        related_name="itineraries",
+        blank=True,
+    )
+
+    def __str__(self):
+        return self.title
+
+
+class AttachedTransitLeg(models.Model):
+    itinerary = models.ForeignKey(
+        Itinerary,
+        on_delete=models.CASCADE,
+        related_name="attached_transit_legs",
+    )
+    transit_leg = models.ForeignKey(
+        TransitLeg,
+        on_delete=models.PROTECT,
+        related_name="attached_itineraries",
+    )
+    start_date = models.DateField()
+
+    def __str__(self):
+        return f"{self.transit_leg} on {self.start_date}"
+
+
+class AttachedVisitCard(models.Model):
+    itinerary = models.ForeignKey(
+        Itinerary,
+        on_delete=models.CASCADE,
+        related_name="attached_visit_cards",
+    )
+    visit_card = models.ForeignKey(
+        VisitCard,
+        on_delete=models.PROTECT,
+        related_name="attached_itineraries",
+    )
+    start_date = models.DateField()
+    note = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"{self.visit_card} on {self.start_date}"
