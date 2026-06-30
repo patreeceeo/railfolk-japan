@@ -59,7 +59,7 @@
 - Include migrations.
 
 ### T2-D · Derived date helpers
-- [ ] complete?
+- [x] complete?
 - **Depends on:** T2-C
 - On `Itinerary`, add:
   - `total_duration()` → returns `(earliest_start, latest_end)` tuple across `AttachedTransitLeg` and `AttachedVisitCard`; returns `None` if no dated items.
