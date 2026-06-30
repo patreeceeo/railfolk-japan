@@ -10,7 +10,7 @@
 ## T1 · Project Foundation
 
 ### T1-A · Django project scaffold
-- [ ] complete?
+- [x] complete?
 - **Depends on:** nothing
 - Create the `railfolk_japan` Django project and a single app (`core`).
 - Add `manage.py`, `settings.py` (SQLite, `DEBUG=True` locally), `urls.py`.
@@ -18,7 +18,7 @@
 - Verify: `python manage.py check` passes with no errors.
 
 ### T1-B · CI/CD pipeline
-- [ ] complete?
+- [x] complete?
 - **Depends on:** T1-A
 - Add `.github/workflows/ci.yml`:
   - Triggered on every push to `main`.
@@ -32,14 +32,14 @@
 ## T2 · Data Models
 
 ### T2-A · User profile
-- [ ] complete?
+- [x] complete?
 - **Depends on:** T1-A
 - Add a `get_gravatar_url(size)` helper on the model using the user's email MD5.
 - No avatar upload field — Gravatar only.
 - Include unit tests for `get_gravatar_url`.
 
 ### T2-B · Admin-managed content models
-- [ ] complete?
+- [x] complete?
 - **Depends on:** T1-A
 - Add models (admin-only creation):
   - `Location`: `name`, `description`, `latitude`, `longitude`, `address (optional)`
