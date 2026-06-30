@@ -1,6 +1,15 @@
 from django.contrib import admin
 
-from .models import EducationCard, Location, TransitLeg, UserProfile, VisitCard
+from .models import (
+    AttachedTransitLeg,
+    AttachedVisitCard,
+    EducationCard,
+    Itinerary,
+    Location,
+    TransitLeg,
+    UserProfile,
+    VisitCard,
+)
 
 
 @admin.register(Location)
@@ -40,6 +49,30 @@ class EducationCardAdmin(admin.ModelAdmin):
     list_display = ("title", "category", "location")
     list_filter = ("category",)
     search_fields = ("title", "body", "location__name")
+
+
+@admin.register(Itinerary)
+class ItineraryAdmin(admin.ModelAdmin):
+    list_display = ("title", "visibility", "owner", "created_at", "updated_at")
+    list_filter = ("visibility",)
+    search_fields = ("title", "description", "owner__username")
+    filter_horizontal = ("education_cards",)
+
+
+@admin.register(AttachedTransitLeg)
+class AttachedTransitLegAdmin(admin.ModelAdmin):
+    list_display = ("itinerary", "transit_leg", "start_date")
+    search_fields = (
+        "itinerary__title",
+        "transit_leg__origin__name",
+        "transit_leg__destination__name",
+    )
+
+
+@admin.register(AttachedVisitCard)
+class AttachedVisitCardAdmin(admin.ModelAdmin):
+    list_display = ("itinerary", "visit_card", "start_date")
+    search_fields = ("itinerary__title", "visit_card__location__name", "note")
 
 
 admin.site.register(UserProfile)
