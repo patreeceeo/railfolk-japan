@@ -1,4 +1,6 @@
 import hashlib
+from collections import OrderedDict
+from datetime import timedelta
 
 from django.conf import settings
 from django.db import models
@@ -120,6 +122,55 @@ class Itinerary(models.Model):
 
     def __str__(self):
         return self.title
+
+    def total_duration(self):
+        earliest_start = None
+        latest_end = None
+
+        for attached_leg in self.attached_transit_legs.select_related("transit_leg"):
+            if attached_leg.transit_leg.duration_days < 1:
+                raise ValueError("transit leg duration_days must be positive")
+
+            end_date = attached_leg.start_date + timedelta(
+                days=attached_leg.transit_leg.duration_days - 1
+            )
+            earliest_start = min(
+                earliest_start or attached_leg.start_date,
+                attached_leg.start_date,
+            )
+            latest_end = max(latest_end or end_date, end_date)
+
+        for attached_visit in self.attached_visit_cards.all():
+            earliest_start = min(
+                earliest_start or attached_visit.start_date,
+                attached_visit.start_date,
+            )
+            latest_end = max(
+                latest_end or attached_visit.start_date,
+                attached_visit.start_date,
+            )
+
+        if earliest_start is None:
+            return None
+
+        return earliest_start, latest_end
+
+    def grouped_by_date(self):
+        grouped = OrderedDict()
+
+        for attached_leg in self.attached_transit_legs.order_by("start_date", "id"):
+            grouped.setdefault(
+                attached_leg.start_date,
+                {"transit_legs": [], "visit_cards": []},
+            )["transit_legs"].append(attached_leg)
+
+        for attached_visit in self.attached_visit_cards.order_by("start_date", "id"):
+            grouped.setdefault(
+                attached_visit.start_date,
+                {"transit_legs": [], "visit_cards": []},
+            )["visit_cards"].append(attached_visit)
+
+        return OrderedDict(sorted(grouped.items()))
 
 
 class AttachedTransitLeg(models.Model):
