@@ -77,7 +77,7 @@
   - `User` (with profile fields)
   - `Location`, `TransitLeg`, `VisitCard`, `EducationCard`
   - `Itinerary` (with inlines for `AttachedTransitLeg`, `AttachedVisitCard`, education-card M2M)
-  - `Vote` (once T6 is done)
+  - `Vote` (once T7 is done)
 - Add a custom `Itinerary` admin change view that shows aggregate vote-reason counts.
 
 ### T3-B · Northern Kyushu seed data
@@ -131,7 +131,7 @@
 - Show visibility badge only to owner/admin.
 - Date-grouped content sections: transit legs and visit cards grouped by date (use `grouped_by_date()`).
 - Education cards shown below (not date-grouped).
-- Vote controls if signed-in and not the owner (wired up in T6).
+- Vote controls if signed-in and not the owner (wired up in T7).
 - Reference: `mocks/itinerary-detail.html` and `mocks/itinerary-in-progress.html`.
 
 ### T5-D · User profile `/users/<username>/`
