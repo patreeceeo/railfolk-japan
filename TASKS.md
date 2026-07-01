@@ -43,7 +43,7 @@
 - **Depends on:** T1-A
 - Add models (admin-only creation):
   - `Location`: `name`, `description`, `latitude`, `longitude`, `address (optional)`
-  - `TransitLeg`: `mode` (choices: train/shinkansen/limited-express/bus), `origin` → `Location`, `destination` → `Location`, `operator (optional)`, `line_name (optional)`, `fare_yen`, `duration_days`
+  - `TransitLeg`: `mode` (choices: train/shinkansen/limited-express/bus), `origin` → `Location`, `destination` → `Location`, `operator (optional)`, `line_name (optional)`, `fare_yen`, `duration_hours`
   - `VisitCard`: `location` → `Location`, `suggested_hours`, `admission_yen`
   - `EducationCard`: `title`, `category` (choices: rail/culture/language/regional-context), `body`, `location (optional)` → `Location`
 - Include migrations.

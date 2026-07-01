@@ -52,7 +52,7 @@ class TransitLegAdmin(admin.ModelAdmin):
         "operator",
         "line_name",
         "fare_yen",
-        "duration_days",
+        "duration_hours",
     )
     list_filter = ("mode",)
     search_fields = (

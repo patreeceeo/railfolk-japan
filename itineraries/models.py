@@ -58,7 +58,7 @@ class TransitLeg(models.Model):
     operator = models.CharField(max_length=100, blank=True)
     line_name = models.CharField(max_length=100, blank=True)
     fare_yen = models.PositiveIntegerField()
-    duration_days = models.PositiveIntegerField()
+    duration_hours = models.PositiveIntegerField()
 
     def __str__(self):
         return f"{self.origin} to {self.destination}"
@@ -128,11 +128,11 @@ class Itinerary(models.Model):
         latest_end = None
 
         for attached_leg in self.attached_transit_legs.select_related("transit_leg"):
-            if attached_leg.transit_leg.duration_days < 1:
-                raise ValueError("transit leg duration_days must be positive")
+            if attached_leg.transit_leg.duration_hours < 1:
+                raise ValueError("transit leg duration_hours must be positive")
 
             end_date = attached_leg.start_date + timedelta(
-                days=attached_leg.transit_leg.duration_days - 1
+                days=(attached_leg.transit_leg.duration_hours - 1) // 24
             )
             earliest_start = min(
                 earliest_start or attached_leg.start_date,

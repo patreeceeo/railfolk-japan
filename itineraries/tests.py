@@ -138,14 +138,14 @@ class ItineraryDateHelperTests(TestCase):
             origin=self.origin,
             destination=self.destination,
             fare_yen=14000,
-            duration_days=2,
+            duration_hours=25,
         )
         self.same_day_transit_leg = TransitLeg.objects.create(
             mode=TransitLeg.Mode.TRAIN,
             origin=self.destination,
             destination=self.origin,
             fare_yen=9000,
-            duration_days=1,
+            duration_hours=3,
         )
         self.visit_card = VisitCard.objects.create(
             location=self.visit_location,

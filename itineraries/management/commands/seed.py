@@ -271,15 +271,15 @@ class Command(BaseCommand):
         rows = [
             ("Kushida Shrine", "Dazaifu Tenmangu", TransitLeg.Mode.TRAIN, "Nishitetsu", "Tenjin Omuta/Dazaifu Line", 420, 1),
             ("Dazaifu Tenmangu", "Kushida Shrine", TransitLeg.Mode.TRAIN, "Nishitetsu", "Dazaifu/Tenjin Omuta Line", 420, 1),
-            ("Kushida Shrine", "Takeo Onsen", TransitLeg.Mode.SHINKANSEN, "JR Kyushu", "Relay Kamome/Nishi Kyushu Shinkansen", 3600, 1),
+            ("Kushida Shrine", "Takeo Onsen", TransitLeg.Mode.SHINKANSEN, "JR Kyushu", "Relay Kamome/Nishi Kyushu Shinkansen", 3600, 2),
             ("Takeo Onsen", "Dejima", TransitLeg.Mode.SHINKANSEN, "JR Kyushu", "Nishi Kyushu Shinkansen", 3600, 1),
             ("Dejima", "Sofukuji Temple", TransitLeg.Mode.TRAIN, "Nagasaki Electric Tramway", "Line 1/5", 140, 1),
             ("Sofukuji Temple", "Nagasaki Peace Park", TransitLeg.Mode.TRAIN, "Nagasaki Electric Tramway", "Line 1", 140, 1),
-            ("Nagasaki Peace Park", "Kumamoto Castle area", TransitLeg.Mode.LIMITED_EXPRESS, "JR Kyushu", "Kamome/Shinkansen transfer", 7500, 1),
+            ("Nagasaki Peace Park", "Kumamoto Castle area", TransitLeg.Mode.LIMITED_EXPRESS, "JR Kyushu", "Kamome/Shinkansen transfer", 7500, 4),
             ("Kumamoto Castle area", "Suizenji Garden", TransitLeg.Mode.TRAIN, "Kumamoto City Tram", "A Line", 180, 1),
-            ("Suizenji Garden", "Yufuin", TransitLeg.Mode.BUS, "Kyushu Sanko Bus", "Kyushu Odan Bus", 4500, 1),
+            ("Suizenji Garden", "Yufuin", TransitLeg.Mode.BUS, "Kyushu Sanko Bus", "Kyushu Odan Bus", 4500, 4),
             ("Yufuin", "Beppu jigoku area", TransitLeg.Mode.BUS, "Kamenoi Bus", "Yufuin-Beppu Line", 1000, 1),
-            ("Beppu jigoku area", "Kushida Shrine", TransitLeg.Mode.LIMITED_EXPRESS, "JR Kyushu", "Sonic", 6500, 1),
+            ("Beppu jigoku area", "Kushida Shrine", TransitLeg.Mode.LIMITED_EXPRESS, "JR Kyushu", "Sonic", 6500, 2),
         ]
 
         transit_legs = {}
@@ -290,7 +290,7 @@ class Command(BaseCommand):
             operator,
             line_name,
             fare_yen,
-            duration_days,
+            duration_hours,
         ) in rows:
             transit_leg, _ = TransitLeg.objects.update_or_create(
                 origin=locations[origin_name],
@@ -300,7 +300,7 @@ class Command(BaseCommand):
                 line_name=line_name,
                 defaults={
                     "fare_yen": fare_yen,
-                    "duration_days": duration_days,
+                    "duration_hours": duration_hours,
                 },
             )
             transit_legs[(origin_name, destination_name)] = transit_leg
