@@ -16,4 +16,5 @@ urlpatterns = [
         name="logout",
     ),
     path("accounts/signup/", views.signup, name="signup"),
+    path("avatar/<int:user_id>", views.avatar, name="avatar"),
 ]

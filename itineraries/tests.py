@@ -1,6 +1,7 @@
 from collections import OrderedDict
 from datetime import date
 from io import StringIO
+from unittest.mock import patch
 
 from django.contrib.auth import get_user_model
 from django.core.management import call_command
@@ -18,6 +19,12 @@ from .models import (
     TransitLeg,
     UserProfile,
     VisitCard,
+)
+from .avatars import (
+    DEFAULT_AVATAR_SVG,
+    FALLBACK_CACHE_CONTROL,
+    SUCCESS_CACHE_CONTROL,
+    AvatarFetchError,
 )
 
 
@@ -116,6 +123,37 @@ class UserModelTests(TestCase):
 
         with self.assertRaises(IntegrityError):
             get_user_model().objects.create_user(username="patreece")
+
+
+class AvatarViewTests(TestCase):
+    def test_avatar_proxies_dicebear_svg_by_user_id(self):
+        user = get_user_model().objects.create_user(username="patreece")
+        image = b"<svg>avatar</svg>"
+
+        with patch("itineraries.views.fetch_avatar_svg", return_value=image) as fetch:
+            response = self.client.get(reverse("avatar", args=[user.id]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["Content-Type"], "image/svg+xml")
+        self.assertEqual(response["Cache-Control"], SUCCESS_CACHE_CONTROL)
+        self.assertEqual(response.content, image)
+        fetch.assert_called_once_with(user.avatar_key)
+
+    def test_avatar_falls_back_when_provider_fails(self):
+        user = get_user_model().objects.create_user(username="patreece")
+
+        with patch("itineraries.views.fetch_avatar_svg", side_effect=AvatarFetchError):
+            response = self.client.get(reverse("avatar", args=[user.id]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["Content-Type"], "image/svg+xml")
+        self.assertEqual(response["Cache-Control"], FALLBACK_CACHE_CONTROL)
+        self.assertEqual(response.content, DEFAULT_AVATAR_SVG)
+
+    def test_avatar_returns_404_for_unknown_user(self):
+        response = self.client.get(reverse("avatar", args=[999]))
+
+        self.assertEqual(response.status_code, 404)
 
 
 class ItineraryDateHelperTests(TestCase):
