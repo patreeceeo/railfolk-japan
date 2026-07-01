@@ -2,7 +2,7 @@
 
 Consider the following for every code change.
 
-1. YAGNI - Don't build it until you need it
+1. YAGNI - Don't build it until it's painful to do without it
 2. DRY - Refactor after the second duplication
 3. Delete aggressively - Less code means less bugs
 4. KISS - Always choose the simpler option, all other things being equal
