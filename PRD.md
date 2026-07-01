@@ -126,7 +126,7 @@ An attached transit leg is manually created by the user from a transit leg and a
 Fields:
 
 * Transit leg
-* Itenerary
+* Itinerary
 * Start date
 
 ### Visit card
@@ -193,7 +193,7 @@ Upvote reasons:
 
 Downvote reasons:
 
-* Unecessary backtracking
+* Uneccessary backtracking
 * Unrealistic visit timing
 * Unrealistic transfer
 * Overloaded
@@ -300,7 +300,7 @@ For non-owner viewers, show only public itineraries. For owner/admin, show all t
 Admins should be able to manage:
 
 * Visits and attached visits
-* Education cards and thier associations
+* Education cards and their associations
 * Itineraries
 * Transit legs
 * Visits and attached visits
