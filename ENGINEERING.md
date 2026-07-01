@@ -14,7 +14,7 @@ Use:
 * Minimal JavaScript
 * HTMX only if it clearly reduces complexity
 * No CSS unless explicitly requested!
-* Gravatar for user profile image
+* App-served avatar endpoint for user profile image
 
 Avoid React, Next.js, API-first architecture, background jobs, paid APIs, file uploads, and complex frontend state.
 
