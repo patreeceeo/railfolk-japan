@@ -4,9 +4,13 @@ The app lets users manually create Japan transit itineraries using trains and bu
 
 This is not a general transit app. It does not calculate routes, validate schedules, book travel, reserve seats, sell passes, optimize fares, or fetch live transit data. It is focused on intercity travel within Japan rather than travel within Japan's metro areas.
 
+# Target User
+
+English-speaker interested in the broad array of authentic cultural experiences Japan has to offer. Other interests include trains, public transit, video games, comics/manga, animation and technology.
+
 # Goals
 
-The main goal is to be so good at promoting over-land Japan tourism that Japan's rail companies want to sponsor it. In order to do that, the app must be focused, intuitive, useful and fun to use.
+The main goal is to be so good at promoting over-land Japan tourism that Japan's rail companies want to sponsor it. In order to do that, the app must be focused, intuitive, useful and fun to use for the target users.
 
 ## Core product constraints
 
