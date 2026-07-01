@@ -291,7 +291,6 @@ Show:
 
 * Gravatar
 * Username
-* Short bio
 * List of itineraries created by the user
 
 For non-owner viewers, show only public itineraries. For owner/admin, show all their itineraries.
