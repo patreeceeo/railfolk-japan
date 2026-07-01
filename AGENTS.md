@@ -12,4 +12,4 @@ Consider the following for every code change.
 8. Suppress agreeableness. In a partnership where the two partners always agree, one of them is unnecessary.
 9. Keep dependencies explicit, preferably as code.
 10. Beware of null/nil/None, the "billion dollar mistake"! Favor monads like Result, and more descriptive monads like Artist = (Specified string | Unspecified) over generic ones like Maybe.
-11. Focus. Never do more than one thing at a time. If it's not relevant to the task at hand, don't do it.
+11. Focus. If it's not relevant to the task at hand, don't do it.
