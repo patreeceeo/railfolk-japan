@@ -20,7 +20,7 @@ The reframe:
 
 Most rail-planning tools assume you already know where you're going. Railfolk Japan assumes you don't — yet — and turns the discovering into the product, not a tax you pay before the "real" tool takes over.
 
-Three ways to say the differentiation, depending on where in the PRD you want to use it:
+Three ways to state the differentiation:
 
 1. Against the category (positioning statement): Rome2Rio answers 'how do I get from Fukuoka to Nagasaki.' Railfolk Japan answers 'what would three weeks discovering Kyushu by rail actually look like' — and lets you build, share, and vote on the answer before you've bought a single ticket.
 2. Against the behavior (why it's sticky): A trip planner is a checkout flow — you use it once per trip and leave. Railfolk Japan is a browsing surface — itineraries are content, not transactions, so there's a reason to come back even when you have no trip booked.
