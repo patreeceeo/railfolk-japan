@@ -31,6 +31,8 @@ INSTALLED_APPS = [
     "itineraries",
 ]
 
+AUTH_USER_MODEL = "itineraries.User"
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",

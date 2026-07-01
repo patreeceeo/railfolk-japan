@@ -1,9 +1,45 @@
-import hashlib
+import secrets
 from collections import OrderedDict
 from datetime import timedelta
 
+from django.contrib.auth.models import AbstractUser
 from django.conf import settings
+from django.core.validators import RegexValidator
 from django.db import models
+from django.db.models.functions import Lower
+
+
+def generate_avatar_key():
+    return secrets.token_hex(16)
+
+
+username_validator = RegexValidator(
+    regex=r"^[A-Za-z0-9_-]{3,20}$",
+    message="Username must be 3-20 characters and contain only letters, numbers, underscores, or hyphens.",
+)
+
+
+class User(AbstractUser):
+    username = models.CharField(
+        max_length=20,
+        unique=True,
+        db_index=True,
+        validators=[username_validator],
+    )
+    avatar_key = models.CharField(
+        max_length=32,
+        default=generate_avatar_key,
+        editable=False,
+        unique=True,
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                Lower("username"),
+                name="itineraries_user_username_ci_unique",
+            ),
+        ]
 
 
 class UserProfile(models.Model):
@@ -16,14 +52,6 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.get_username()
-
-    def get_gravatar_url(self, size):
-        if type(size) is not int or size < 1:
-            raise ValueError("size must be a positive integer")
-
-        normalized_email = self.user.email.strip().lower()
-        email_hash = hashlib.sha256(normalized_email.encode("utf-8")).hexdigest()
-        return f"https://www.gravatar.com/avatar/{email_hash}?s={size}&d=identicon"
 
 
 class Location(models.Model):

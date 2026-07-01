@@ -34,9 +34,9 @@
 ### T2-A · User profile
 - [x] complete?
 - **Depends on:** T1-A
-- Add a `get_gravatar_url(size)` helper on the model using the user's email MD5.
-- No avatar upload field — Gravatar only.
-- Include unit tests for `get_gravatar_url`.
+- Use a chosen username for public identity.
+- Add an internal `avatar_key` generated server-side for provider-agnostic avatar lookup.
+- No avatar upload field.
 
 ### T2-B · Admin-managed content models
 - [x] complete?

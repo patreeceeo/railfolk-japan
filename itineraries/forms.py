@@ -6,7 +6,7 @@ from .models import UserProfile
 
 
 class SignUpForm(forms.Form):
-    username = forms.CharField(max_length=150)
+    username = forms.CharField(max_length=20)
     email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
 
@@ -14,8 +14,12 @@ class SignUpForm(forms.Form):
         username = self.cleaned_data["username"]
         User = get_user_model()
 
-        if User.objects.filter(username=username).exists():
+        if User.objects.filter(username__iexact=username).exists():
             raise forms.ValidationError("A user with that username already exists.")
+
+        model_field = User._meta.get_field("username")
+        for validator in model_field.validators:
+            validator(username)
 
         return username
 

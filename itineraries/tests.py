@@ -4,6 +4,8 @@ from io import StringIO
 
 from django.contrib.auth import get_user_model
 from django.core.management import call_command
+from django.core.exceptions import ValidationError
+from django.db import IntegrityError
 from django.test import SimpleTestCase, TestCase
 from django.urls import reverse
 
@@ -86,30 +88,34 @@ class AuthPageTests(TestCase):
         self.assertEqual(self.client.session["_auth_user_id"], str(user.id))
 
 
-class UserProfileTests(TestCase):
-    def test_get_gravatar_url_uses_normalized_email_sha256(self):
-        user = get_user_model().objects.create_user(
-            username="patreece",
-            email=" Patreece@Example.COM ",
-        )
-        profile = UserProfile.objects.create(user=user)
-
-        self.assertEqual(
-            profile.get_gravatar_url(96),
-            "https://www.gravatar.com/avatar/"
-            "5fa578249e1f20c35509ca2dd16456e9f4a73f18b2cbf602e6a20e2b1d8ee3e2"
-            "?s=96&d=identicon",
-        )
-
-    def test_get_gravatar_url_rejects_non_positive_size(self):
+class UserModelTests(TestCase):
+    def test_avatar_key_is_generated_for_new_users(self):
         user = get_user_model().objects.create_user(
             username="patreece",
             email="patreece@example.com",
         )
-        profile = UserProfile.objects.create(user=user)
 
-        with self.assertRaisesMessage(ValueError, "size must be a positive integer"):
-            profile.get_gravatar_url(0)
+        self.assertEqual(len(user.avatar_key), 32)
+        self.assertNotIn("patreece", user.avatar_key)
+        self.assertNotIn("example", user.avatar_key)
+
+    def test_username_rejects_invalid_characters(self):
+        user = get_user_model()(username="bad name", email="bad@example.com")
+
+        with self.assertRaises(ValidationError):
+            user.full_clean()
+
+    def test_username_rejects_too_short_values(self):
+        user = get_user_model()(username="ab", email="ab@example.com")
+
+        with self.assertRaises(ValidationError):
+            user.full_clean()
+
+    def test_username_is_case_insensitive_unique(self):
+        get_user_model().objects.create_user(username="Patreece")
+
+        with self.assertRaises(IntegrityError):
+            get_user_model().objects.create_user(username="patreece")
 
 
 class ItineraryDateHelperTests(TestCase):
