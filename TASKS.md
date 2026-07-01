@@ -71,7 +71,7 @@
 ## T3 · Admin & Seed Data
 
 ### T3-A · Django admin registration
-- [ ] complete?
+- [x] complete?
 - **Depends on:** T2-C
 - Register in `admin.py`:
   - `User` (with profile fields)
@@ -81,7 +81,7 @@
 - Add a custom `Itinerary` admin change view that shows aggregate vote-reason counts.
 
 ### T3-B · Northern Kyushu seed data
-- [ ] complete?
+- [x] complete?
 - **Depends on:** T2-C
 - Add a management command `python manage.py seed`.
 - Must create:
@@ -97,7 +97,7 @@
 ## T4 · Auth Pages
 
 ### T4-A · Sign-up and sign-in
-- [ ] complete?
+- [x] complete?
 - **Depends on:** T2-A
 - Use Django's built-in auth views for login/logout.
 - Add a minimal sign-up form (username, email, password).
@@ -109,7 +109,7 @@
 ## T5 · Public Pages
 
 ### T5-A · Landing page `/`
-- [ ] complete?
+- [x] complete?
 - **Depends on:** T1-A
 - Render `mocks/index.html` as a reference.
 - One-paragraph product description + link to `/itineraries/`.
