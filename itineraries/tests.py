@@ -1,13 +1,16 @@
 from collections import OrderedDict
 from datetime import date
+from io import StringIO
 
 from django.contrib.auth import get_user_model
+from django.core.management import call_command
 from django.test import SimpleTestCase, TestCase
 from django.urls import reverse
 
 from .models import (
     AttachedTransitLeg,
     AttachedVisitCard,
+    EducationCard,
     Itinerary,
     Location,
     TransitLeg,
@@ -199,3 +202,48 @@ class ItineraryDateHelperTests(TestCase):
                 {"transit_legs": [later_leg], "visit_cards": []},
             ),
         ])
+
+
+class SeedCommandTests(TestCase):
+    def test_seed_creates_required_data_and_is_idempotent(self):
+        output = StringIO()
+        call_command("seed", stdout=output)
+
+        self.assertIn("Seed data loaded.", output.getvalue())
+        self.assertEqual(get_user_model().objects.count(), 3)
+        self.assertEqual(UserProfile.objects.count(), 3)
+        self.assertEqual(Location.objects.count(), 10)
+        self.assertEqual(EducationCard.objects.count(), 10)
+        self.assertEqual(VisitCard.objects.count(), 10)
+        self.assertEqual(TransitLeg.objects.count(), 11)
+        self.assertEqual(Itinerary.objects.count(), 3)
+        self.assertEqual(
+            Itinerary.objects.filter(visibility=Itinerary.Visibility.PUBLIC).count(),
+            3,
+        )
+        self.assertEqual(AttachedTransitLeg.objects.count(), 11)
+        self.assertEqual(AttachedVisitCard.objects.count(), 10)
+
+        counts = {
+            "users": get_user_model().objects.count(),
+            "profiles": UserProfile.objects.count(),
+            "locations": Location.objects.count(),
+            "education_cards": EducationCard.objects.count(),
+            "visit_cards": VisitCard.objects.count(),
+            "transit_legs": TransitLeg.objects.count(),
+            "itineraries": Itinerary.objects.count(),
+            "attached_legs": AttachedTransitLeg.objects.count(),
+            "attached_visits": AttachedVisitCard.objects.count(),
+        }
+
+        call_command("seed", stdout=StringIO())
+
+        self.assertEqual(get_user_model().objects.count(), counts["users"])
+        self.assertEqual(UserProfile.objects.count(), counts["profiles"])
+        self.assertEqual(Location.objects.count(), counts["locations"])
+        self.assertEqual(EducationCard.objects.count(), counts["education_cards"])
+        self.assertEqual(VisitCard.objects.count(), counts["visit_cards"])
+        self.assertEqual(TransitLeg.objects.count(), counts["transit_legs"])
+        self.assertEqual(Itinerary.objects.count(), counts["itineraries"])
+        self.assertEqual(AttachedTransitLeg.objects.count(), counts["attached_legs"])
+        self.assertEqual(AttachedVisitCard.objects.count(), counts["attached_visits"])
