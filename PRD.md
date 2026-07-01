@@ -101,7 +101,7 @@ Fields:
 * Optional operator
 * Optional line name
 * Estimated fare in yen
-* Duration in days, rounded down, zero or more
+* Duration in hours
 
 No departure time required. No arrival time required. No fare. No schedule lookup.
 
