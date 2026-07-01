@@ -1,4 +1,4 @@
-# Absolute Dictates
+# Ten Commandments
 
 Consider the following for every code change.
 
