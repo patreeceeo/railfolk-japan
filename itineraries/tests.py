@@ -27,6 +27,65 @@ class HomePageTests(SimpleTestCase):
         self.assertContains(response, "Railfolk Japan")
 
 
+class AuthPageTests(TestCase):
+    def test_login_page_loads(self):
+        response = self.client.get(reverse("login"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Sign in")
+
+    def test_login_authenticates_existing_user(self):
+        user = get_user_model().objects.create_user(
+            username="patreece",
+            password="Stronger-pass-2026",
+        )
+
+        response = self.client.post(
+            reverse("login"),
+            {
+                "username": "patreece",
+                "password": "Stronger-pass-2026",
+            },
+        )
+
+        self.assertRedirects(response, reverse("home"))
+        self.assertEqual(self.client.session["_auth_user_id"], str(user.id))
+
+    def test_logout_uses_builtin_auth_view(self):
+        user = get_user_model().objects.create_user(
+            username="patreece",
+            password="Stronger-pass-2026",
+        )
+        self.client.force_login(user)
+
+        response = self.client.post(reverse("logout"))
+
+        self.assertRedirects(response, reverse("home"))
+        self.assertNotIn("_auth_user_id", self.client.session)
+
+    def test_signup_page_loads(self):
+        response = self.client.get(reverse("signup"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Sign up")
+
+    def test_signup_creates_profile_and_signs_user_in(self):
+        response = self.client.post(
+            reverse("signup"),
+            {
+                "username": "patreece",
+                "email": "patreece@example.com",
+                "password": "Stronger-pass-2026",
+            },
+        )
+
+        user = get_user_model().objects.get(username="patreece")
+        self.assertRedirects(response, reverse("home"))
+        self.assertEqual(user.email, "patreece@example.com")
+        self.assertTrue(UserProfile.objects.filter(user=user).exists())
+        self.assertEqual(self.client.session["_auth_user_id"], str(user.id))
+
+
 class UserProfileTests(TestCase):
     def test_get_gravatar_url_uses_normalized_email_sha256(self):
         user = get_user_model().objects.create_user(
