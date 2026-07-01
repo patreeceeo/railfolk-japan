@@ -22,9 +22,9 @@ Most rail-planning tools assume you already know where you're going. Railfolk Ja
 
 Three ways to state the differentiation:
 
-1. Against the category (positioning statement): Rome2Rio answers 'how do I get from Fukuoka to Nagasaki.' Railfolk Japan answers 'what would three weeks discovering Kyushu by rail actually look like' — and lets you build, share, and vote on the answer before you've bought a single ticket.
-2. Against the behavior (why it's sticky): A trip planner is a checkout flow — you use it once per trip and leave. Railfolk Japan is a browsing surface — itineraries are content, not transactions, so there's a reason to come back even when you have no trip booked.
-3. Against the outcome: The itinerary that comes out the other end is real and usable — but that's the receipt, not the point. The point is the hour someone spends discovering that there's a rail line through Northern Kyushu with three stops they'd never heard of, built entirely out of curiosity about the network itself.
+1. **Against the category (positioning statement)**: Rome2Rio answers 'how do I get from Fukuoka to Nagasaki.' Railfolk Japan answers 'what would three weeks discovering Kyushu by rail actually look like' — and lets you build, share, and vote on the answer before you've bought a single ticket.
+2. **Against the behavior (why it's sticky)**: A trip planner is a checkout flow — you use it once per trip and leave. Railfolk Japan is a browsing surface — itineraries are content, not transactions, so there's a reason to come back even when you have no trip booked.
+3. **Against the outcome**: The itinerary that comes out the other end is real and usable — but that's the receipt, not the point. The point is the hour someone spends discovering that there's a rail line through Northern Kyushu with three stops they'd never heard of, built entirely out of curiosity about the network itself.
 
 Navigation apps have zero incentive to make a rail company's network look interesting, only to make a specific trip look fast. A tool that makes people fall in love with the shape of the rail map itself is doing marketing work no navigation app is structurally capable of doing, because it isn't trying to.
 
