@@ -303,7 +303,6 @@ Admins should be able to manage:
 * Education cards and their associations
 * Itineraries
 * Transit legs
-* Visits and attached visits
 * Votes
 * User profiles
 
