@@ -70,7 +70,7 @@ Fields:
 
 * Title
 * description
-* Visibility: private, unlisted (note: there is no private option for now)
+* Visibility: public, unlisted (note: there is no private option for now)
 * Created timestamp
 * Updated timestamp
 * Attached transit legs
