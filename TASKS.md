@@ -1,7 +1,7 @@
 # Railfolk Japan — Implementation Tasks
 
 > Read `PRD.md`, `ENGINEERING.md`, and `AGENTS.md` before starting any task.
-> Stack: Django · Django templates · Django admin · SQLite (local) · Nix flake · minimal JS · no CSS unless asked · Gravatar.
+> Stack: Django · Django templates · Django admin · SQLite (local) · Nix flake · minimal JS · no CSS unless asked.
 > Write unit tests except where noted.
 > Work on **one task at a time**. Do not gold-plate.
 
@@ -119,7 +119,7 @@
 - [ ] complete?
 - **Depends on:** T2-D
 - Show only public itineraries.
-- Columns: title, creator (username + Gravatar), total duration, last updated, description (truncated to 140 chars).
+- Columns: title, creator (username + `/avatar/<user_id>` image), total duration, last updated, description (truncated to 140 chars).
 - Sorting by: name, user, last updated, total duration (query-param `?sort=`).
 - Reference: `mocks/itineraries.html`.
 
@@ -127,7 +127,7 @@
 - [ ] complete?
 - **Depends on:** T2-D
 - Respect visibility: public = everyone; unlisted = anyone with the URL; private = owner/admin only (404 for others).
-- Display: title, author (Gravatar + username), description, total duration, last updated.
+- Display: title, author (`/avatar/<user_id>` image + username), description, total duration, last updated.
 - Show visibility badge only to owner/admin.
 - Date-grouped content sections: transit legs and visit cards grouped by date (use `grouped_by_date()`).
 - Education cards shown below (not date-grouped).
@@ -137,7 +137,7 @@
 ### T5-D · User profile `/users/<username>/`
 - [ ] complete?
 - **Depends on:** T2-A, T2-C
-- Show: Gravatar, username, short bio, list of itineraries.
+- Show: `/avatar/<user_id>` image, username, short bio, list of itineraries.
 - Non-owner/non-admin: show only public itineraries. Owner/admin: show all.
 - Reference: `mocks/user-profile.html`.
 
@@ -207,7 +207,7 @@ All tasks are done when every acceptance criterion in `PRD.md` passes:
 - [ ] User can attach curated education cards
 - [ ] Itinerary page groups content by date (no stored day records)
 - [ ] Public itinerary index sorts by name, user, last updated, total duration
-- [ ] User profile shows Gravatar, and that user's itineraries
+- [ ] User profile shows avatar, username, and that user's itineraries
 - [ ] Signed-in user can upvote/downvote with required reasons
 - [ ] Normal users do not see votes
 - [ ] Admins can see vote reason breakdowns

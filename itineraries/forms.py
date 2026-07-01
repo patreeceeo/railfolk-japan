@@ -23,6 +23,15 @@ class SignUpForm(forms.Form):
 
         return username
 
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        User = get_user_model()
+
+        if User.objects.filter(email__iexact=email).exists():
+            raise forms.ValidationError("A user with that email already exists.")
+
+        return email
+
     def clean_password(self):
         password = self.cleaned_data["password"]
         validate_password(password)

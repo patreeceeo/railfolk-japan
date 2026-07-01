@@ -45,6 +45,7 @@ class AuthPageTests(TestCase):
 
     def test_login_authenticates_existing_user(self):
         user = get_user_model().objects.create_user(
+            email="patreece@example.com",
             username="patreece",
             password="Stronger-pass-2026",
         )
@@ -52,7 +53,7 @@ class AuthPageTests(TestCase):
         response = self.client.post(
             reverse("login"),
             {
-                "username": "patreece",
+                "username": "patreece@example.com",
                 "password": "Stronger-pass-2026",
             },
         )
@@ -62,6 +63,7 @@ class AuthPageTests(TestCase):
 
     def test_logout_uses_builtin_auth_view(self):
         user = get_user_model().objects.create_user(
+            email="patreece@example.com",
             username="patreece",
             password="Stronger-pass-2026",
         )
@@ -91,15 +93,38 @@ class AuthPageTests(TestCase):
         user = get_user_model().objects.get(username="patreece")
         self.assertRedirects(response, reverse("home"))
         self.assertEqual(user.email, "patreece@example.com")
+        self.assertEqual(user.username, "patreece")
         self.assertTrue(UserProfile.objects.filter(user=user).exists())
         self.assertEqual(self.client.session["_auth_user_id"], str(user.id))
+
+        home_response = self.client.get(reverse("home"))
+        self.assertContains(home_response, "patreece")
+        self.assertContains(home_response, reverse("avatar", args=[user.id]))
+
+    def test_signup_rejects_duplicate_email(self):
+        get_user_model().objects.create_user(
+            email="patreece@example.com",
+            username="patreece",
+        )
+
+        response = self.client.post(
+            reverse("signup"),
+            {
+                "username": "patreece2",
+                "email": "patreece@example.com",
+                "password": "Stronger-pass-2026",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "A user with that email already exists.")
 
 
 class UserModelTests(TestCase):
     def test_avatar_key_is_generated_for_new_users(self):
         user = get_user_model().objects.create_user(
-            username="patreece",
             email="patreece@example.com",
+            username="patreece",
         )
 
         self.assertEqual(len(user.avatar_key), 32)
@@ -119,15 +144,24 @@ class UserModelTests(TestCase):
             user.full_clean()
 
     def test_username_is_case_insensitive_unique(self):
-        get_user_model().objects.create_user(username="Patreece")
+        get_user_model().objects.create_user(
+            email="patreece@example.com",
+            username="Patreece",
+        )
 
         with self.assertRaises(IntegrityError):
-            get_user_model().objects.create_user(username="patreece")
+            get_user_model().objects.create_user(
+                email="patreece2@example.com",
+                username="patreece",
+            )
 
 
 class AvatarViewTests(TestCase):
     def test_avatar_proxies_dicebear_svg_by_user_id(self):
-        user = get_user_model().objects.create_user(username="patreece")
+        user = get_user_model().objects.create_user(
+            email="patreece@example.com",
+            username="patreece",
+        )
         image = b"<svg>avatar</svg>"
 
         with patch("itineraries.views.fetch_avatar_svg", return_value=image) as fetch:
@@ -140,7 +174,10 @@ class AvatarViewTests(TestCase):
         fetch.assert_called_once_with(user.avatar_key)
 
     def test_avatar_falls_back_when_provider_fails(self):
-        user = get_user_model().objects.create_user(username="patreece")
+        user = get_user_model().objects.create_user(
+            email="patreece@example.com",
+            username="patreece",
+        )
 
         with patch("itineraries.views.fetch_avatar_svg", side_effect=AvatarFetchError):
             response = self.client.get(reverse("avatar", args=[user.id]))
@@ -158,7 +195,10 @@ class AvatarViewTests(TestCase):
 
 class ItineraryDateHelperTests(TestCase):
     def setUp(self):
-        self.user = get_user_model().objects.create_user(username="patreece")
+        self.user = get_user_model().objects.create_user(
+            email="patreece@example.com",
+            username="patreece",
+        )
         self.origin = Location.objects.create(
             name="Tokyo",
             description="Capital city",

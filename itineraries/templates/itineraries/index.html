@@ -10,8 +10,17 @@
         <p><a href="{% url 'home' %}">Railfolk Japan</a></p>
         <nav aria-label="Main navigation">
             <a href="/itineraries/">Public itineraries</a>
-            <a href="{% url 'signup' %}">Sign up</a>
-            <a href="{% url 'login' %}">Sign in</a>
+            {% if user.is_authenticated %}
+                <img src="{% url 'avatar' user.id %}" alt="">
+                <span>{{ user.username }}</span>
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit">Sign out</button>
+                </form>
+            {% else %}
+                <a href="{% url 'signup' %}">Sign up</a>
+                <a href="{% url 'login' %}">Sign in</a>
+            {% endif %}
         </nav>
     </header>
 

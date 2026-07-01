@@ -1,4 +1,3 @@
-import django.contrib.auth.models
 import django.core.validators
 import django.db.models.deletion
 import django.db.models.functions.text
@@ -63,9 +62,8 @@ class Migration(migrations.Migration):
                 (
                     "email",
                     models.EmailField(
-                        blank=True,
                         max_length=254,
-                        verbose_name="email address",
+                        unique=True,
                     ),
                 ),
                 (
@@ -146,7 +144,7 @@ class Migration(migrations.Migration):
                 ],
             },
             managers=[
-                ("objects", django.contrib.auth.models.UserManager()),
+                ("objects", itineraries.models.UserManager()),
             ],
         ),
         migrations.CreateModel(

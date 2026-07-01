@@ -57,7 +57,7 @@ The app must not support:
 
 A user profile is minimal.
 
-The displayed avatar should be derived from a salted hash of the user’s email address
+The displayed avatar should be served from `/avatar/<user_id>` and generated from the user's internal avatar key, not from email.
 
 Fields:
 
