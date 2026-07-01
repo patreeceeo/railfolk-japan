@@ -12,6 +12,34 @@ English-speaker interested in the broad array of authentic cultural experiences 
 
 The main goal is to be so good at promoting over-land Japan tourism that Japan's rail companies want to sponsor it. In order to do that, the app must be focused, intuitive, useful and fun to use for the target users.
 
+# Competitive Framing
+
+The category trap: Every existing tool in this space — Google Maps, Rome2Rio, Hyperdia/Jorudan, Wanderlog — is a utility. You open it because you already know where you're going and need the fastest, cheapest, or most correct way to get there. They're optimized for a single moment: departure day. Once the trip is booked, the tool's job is done, and there's nothing to return to.
+Railfolk Japan isn't competing in that category. It's not trying to be a faster Rome2Rio. It's the thing people open six months before a trip exists — or with no trip planned at all — the way people browse Zillow without buying a house, or build a Steam wishlist without a paycheck to spend. The behavior it's designed around is daydreaming, not departing.
+The reframe:
+
+Most rail-planning tools assume you already know where you're going. Railfolk Japan assumes you don't — yet — and turns the discovering into the product, not a tax you pay before the "real" tool takes over.
+
+Three ways to say the differentiation, depending on where in the PRD you want to use it:
+
+1. Against the category (positioning statement): Rome2Rio answers 'how do I get from Fukuoka to Nagasaki.' Railfolk Japan answers 'what would three weeks discovering Kyushu by rail actually look like' — and lets you build, share, and vote on the answer before you've bought a single ticket.
+2. Against the behavior (why it's sticky): A trip planner is a checkout flow — you use it once per trip and leave. Railfolk Japan is a browsing surface — itineraries are content, not transactions, so there's a reason to come back even when you have no trip booked.
+3. Against the outcome: The itinerary that comes out the other end is real and usable — but that's the receipt, not the point. The point is the hour someone spends discovering that there's a rail line through Northern Kyushu with three stops they'd never heard of, built entirely out of curiosity about the network itself.
+
+Navigation apps have zero incentive to make a rail company's network look interesting, only to make a specific trip look fast. A tool that makes people fall in love with the shape of the rail map itself is doing marketing work no navigation app is structurally capable of doing, because it isn't trying to.
+
+## Why Not Just Use...
+
+### Rome2Rio or Google Maps?
+These are routing engines, and they're excellent at their actual job: telling you the fastest way from point A to point B, right now, using live schedule data. But that's the whole job. The moment your route is found, the tool is finished with you — there's no reason to open it again until your next real trip. Railfolk Japan isn't trying to out-route them. It's for the six months before you have a real trip, when you're not asking "how do I get to Nagasaki" but "what's even out there in Kyushu worth getting to."
+
+### Hyperdia or Jorudan?
+These solve a narrower, more technical problem: precise timetables and transfer connections for travelers who already know their route and need it to actually work on the day. They're indispensable at departure time and irrelevant every other day of the year. Railfolk Japan deliberately doesn't compete on schedule precision — it models the network realistically enough to plan around, but the point isn't nailing your 8:42am transfer. It's discovering the transfer exists at all.
+
+### Wanderlog or similar trip organizers?
+These tools assume the hard part — deciding where to go — is already done, and their job is logistics: dates, bookings, day-by-day checklists for a trip that's already committed. Once the trip ends, the itinerary is archived and forgotten, because it was never meant to be seen by anyone but the traveler. Railfolk Japan flips that: the itinerary isn't a private checklist, it's a public, shareable piece of content that outlives the trip — browsed, voted on, and reused by people who've never met you.
+The common thread: every one of these tools treats the itinerary as scaffolding you discard once the trip is over. Railfolk Japan treats the itinerary as the thing worth keeping — the trip, if it ever happens, is just proof the idea was good.
+
 ## Core product constraints
 
 The app must support:
