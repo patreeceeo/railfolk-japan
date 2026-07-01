@@ -141,7 +141,9 @@ Fields:
 * Suggested visit length in hours
 * Estimated cost of admission in yen
 
-# Attached visit card
+### Attached visit card
+
+Instance of a visit card attached to an intinerary.
 
 Fields:
 
