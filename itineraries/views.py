@@ -1,15 +1,11 @@
 from django.contrib.auth import login
-from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
 from .forms import SignUpForm
 
 
 def home(request):
-    return HttpResponse(
-        "<h1>Railfolk Japan</h1>"
-        "<p>A lightweight site for creating and sharing Japan train and bus itineraries.</p>"
-    )
+    return render(request, "itineraries/index.html")
 
 
 def signup(request):

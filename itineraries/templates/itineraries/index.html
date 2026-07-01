@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Railfolk Japan</title>
+</head>
+<body>
+    <header>
+        <p><a href="{% url 'home' %}">Railfolk Japan</a></p>
+        <nav aria-label="Main navigation">
+            <a href="/itineraries/">Public itineraries</a>
+            <a href="{% url 'signup' %}">Sign up</a>
+            <a href="{% url 'login' %}">Sign in</a>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Railfolk Japan</h1>
+        <p>A lightweight site for creating and sharing Japan train and bus itineraries with curated cultural visits and education cards.</p>
+        <p><a href="/itineraries/">Browse public itineraries</a></p>
+    </main>
+</body>
+</html>
