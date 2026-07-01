@@ -57,11 +57,12 @@ The app must not support:
 
 A user profile is minimal.
 
-The displayed avatar and user name should come from Gravatar using the user’s email address.
+The displayed avatar should be derived from a salted hash of the user’s email address
 
 Fields:
 
 * Email address
+* User name
 * List of itineraries created by that user
 
 No followers, no activity feed, no badges.
@@ -293,7 +294,7 @@ User profile page.
 
 Show:
 
-* Gravatar
+* Avatar
 * Username
 * List of itineraries created by the user
 
@@ -386,7 +387,7 @@ The prototype is acceptable when:
 * The itinerary page groups content by date without stored day records
 * A public itinerary can be browsed from the itinerary index
 * Public itinerary index can sort by name, user, last updated, and total duration
-* A user profile shows Gravatar, short bio, and that user’s itineraries
+* A user profile shows Avatar, user name and that user’s itineraries
 * A signed-in user can upvote/downvote a public itinerary with required reasons
 * Normal users do not see aggregate vote reason counts
 * Admins can see aggregate vote reason counts
